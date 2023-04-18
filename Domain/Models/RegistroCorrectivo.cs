@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Domain.Models
 {
@@ -17,6 +18,11 @@ namespace Domain.Models
         public DateTime Fecha { get; set; }
         #endregion
         #region Métodos
+        public async Task<DataTable> MostrarCorrectivoAsync()
+        {
+            DataTable table = await Task.FromResult(userDao.MostrarCorrectivos());
+            return table;
+        }
         public DataTable MostrarCorrectivo()
         {
             _ = new DataTable();

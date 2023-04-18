@@ -75,3 +75,4 @@ C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\AppMante
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\AppMantenimiento.application
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.exe.manifest
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.application
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmTablas.resources

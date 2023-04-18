@@ -16,6 +16,7 @@ namespace AppMantenimiento
         public FrmDashBoard()
         {
             InitializeComponent();
+            openChildForm(new FrmTablas());
         }
         private void openChildForm(Form childForm)
         {
