@@ -151,11 +151,12 @@ namespace AppMantenimiento
             }
             else if (e.ColumnIndex == dtgActividades.Columns["Mostrar"].Index && e.RowIndex >= 0)
             {
+                MostrarActividades();
                 correctivo.Id = (int)dtgActividades.Rows[e.RowIndex].Cells["id"].Value;
                 correctivo.Descripcion = dtgActividades.Rows[e.RowIndex].Cells["descripcion"].Value.ToString();
                 correctivo.TiempoParo = Convert.ToDouble(dtgActividades.Rows[e.RowIndex].Cells["tiempoParo"].Value);
-                correctivo.DescMaquina = dtgActividades.Rows[e.RowIndex].Cells[11].Value.ToString();
-                correctivo.Fecha = Convert.ToDateTime(dtgActividades.Rows[e.RowIndex].Cells[8].Value);
+                correctivo.DescMaquina = dtgActividades.Rows[e.RowIndex].Cells[8].Value.ToString();
+                correctivo.Fecha = Convert.ToDateTime(dtgActividades.Rows[e.RowIndex].Cells[5].Value);
                 FrmMostrarCorrectivo frm = new FrmMostrarCorrectivo(correctivo);
                 frm.Show();
             }

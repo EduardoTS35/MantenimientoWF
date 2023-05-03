@@ -183,6 +183,46 @@ namespace DataAccess
                 connection.Close();
             }
         }
+        #region Indicadores
+        public DataTable MostrarActividadesRestrasadas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "MostrarActividadesRestrasadas";
+                    command.CommandType = CommandType.StoredProcedure;
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarActividadesRealizadas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "MostrarActividadesRestrasadas";
+                    command.CommandType = CommandType.StoredProcedure;
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        #endregion
         #endregion
         #region Mantenimeinto Correctivo
         public DataTable MostrarCorrectivos()

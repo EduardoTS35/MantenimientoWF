@@ -18,6 +18,7 @@ namespace AppMantenimiento
         DataSet resultados = new DataSet();
         DataView mifiltro;
         DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+        DataGridViewButtonColumn desasignarColumn = new DataGridViewButtonColumn();
         public FrmAsignacionActividad()
         {
             InitializeComponent();
@@ -55,6 +56,8 @@ namespace AppMantenimiento
             dtgActividades.Columns[8].Visible = true;
             dtgActividades.Columns[9].HeaderText = "Asignada";
             dtgActividades.Columns[9].Visible = true;
+            dtgActividades.Columns[10].HeaderText = "Desasignar";
+            dtgActividades.Columns[10].Visible = true;
             //Columnas a ocultar
             dtgActividades.Columns[0].Visible = false;
             dtgActividades.Columns[1].Visible = false;
@@ -73,8 +76,13 @@ namespace AppMantenimiento
             buttonColumn.Text = "Asignar";
             buttonColumn.UseColumnTextForButtonValue = true;
 
+            desasignarColumn.Name = "Desasignar";
+            desasignarColumn.Text = "Desasignar";
+            desasignarColumn.UseColumnTextForButtonValue = true;
+
             // Agregar la columna al control DataGridView
             dtgActividades.Columns.Add(buttonColumn);
+            dtgActividades.Columns.Add(desasignarColumn);
         }
         private async Task MostrarAreaAsync()
         {
@@ -182,6 +190,30 @@ namespace AppMantenimiento
                 else
                     MessageBox.Show("Por favor selecciona una tarea.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            }
+            if (e.ColumnIndex == dtgActividades.Columns["Desasignar"].Index && e.RowIndex >= 0)
+            {
+                actividad.IdActividad = (int)dtgActividades.Rows[e.RowIndex].Cells["idActividad"].Value;
+                actividad.IdArea = (int)dtgActividades.Rows[e.RowIndex].Cells["idArea"].Value;
+                actividad.IdMaquina = (int)dtgActividades.Rows[e.RowIndex].Cells["idMaquina"].Value;
+                actividad.NombreActividad = dtgActividades.Rows[e.RowIndex].Cells["nombreActividad"].Value.ToString();
+                actividad.RecursoHumano = (int)dtgActividades.Rows[e.RowIndex].Cells["recursoHumano"].Value;
+                actividad.Descripcion = dtgActividades.Rows[e.RowIndex].Cells["descripcion"].Value.ToString();
+                actividad.Tiempo = Convert.ToDouble(dtgActividades.Rows[e.RowIndex].Cells["tiempo"].Value);
+                actividad.Periodo = (int)dtgActividades.Rows[e.RowIndex].Cells["periodo"].Value;
+                actividad.FechaProgramada = (DateTime)dtgActividades.Rows[e.RowIndex].Cells["fechaProgramada"].Value;
+                actividad.Asignada = 0;
+                actividad.EditarActividad(actividad.IdArea, actividad.IdMaquina, actividad.NombreActividad,
+                    actividad.RecursoHumano, actividad.Descripcion, actividad.Tiempo, actividad.Periodo,
+                    actividad.FechaProgramada, actividad.Asignada);
+                registro.EliminarRegistro(actividad.IdActividad);
+                dtgActividades.Rows[e.RowIndex].Cells[e.ColumnIndex].ReadOnly = true;
+                dtgActividades.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.Gray;
+                dtgActividades.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.ForeColor = Color.White;
+                MessageBox.Show("Actividad desasignada exitosamente.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DataGridViewRow row = dtgActividades.Rows[e.RowIndex];
+                dtgActividades.Rows.Remove(row);
+                //Método desasignar
             }
         }
         #endregion

@@ -18,6 +18,8 @@ namespace AppMantenimiento
         DataSet resultadosRegistro = new DataSet();
         DataView mifiltroRegistro;
         DateTime fecha = new DateTime();
+        bool fechaDe = false;
+        bool filtroTrabajador=false;
         public FrmRevision()
         {
             InitializeComponent();
@@ -192,6 +194,7 @@ namespace AppMantenimiento
         {
             try
             {
+                filtroTrabajador = true;
                 this.mifiltroRegistro.RowFilter = "idTrabajador = " + cmbTrabajadores.SelectedValue + "";
             }
             catch (Exception) { }
@@ -201,6 +204,7 @@ namespace AppMantenimiento
             try
             {
                 mifiltroRegistro.RowFilter = null;
+                filtroTrabajador=false;
             }
             catch (Exception) { }
         }
@@ -291,5 +295,34 @@ namespace AppMantenimiento
                 }
             }
         }
+        private void dtpDe_ValueChanged(object sender, EventArgs e)
+        {
+            fechaDe = true;
+        }
+
+        private void dtpA_ValueChanged(object sender, EventArgs e)
+        {
+            if (fechaDe)
+            {
+                if (filtroTrabajador)
+                {
+                    try
+                    {
+                        this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "' and idTrabajador="+cmbTrabajadores.SelectedValue+"";
+                    }
+                    catch (Exception) { }
+                }
+                else
+                {
+                    try
+                    {
+                        this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "'";
+                    }
+                    catch (Exception) { }
+                }              
+            }
+        }
+
+
     }
 }

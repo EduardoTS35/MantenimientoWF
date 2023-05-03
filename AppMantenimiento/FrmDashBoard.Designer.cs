@@ -67,6 +67,7 @@
             this.cátalogoActividadesToolStripMenuItem.Name = "cátalogoActividadesToolStripMenuItem";
             this.cátalogoActividadesToolStripMenuItem.Size = new System.Drawing.Size(267, 26);
             this.cátalogoActividadesToolStripMenuItem.Text = "Cátalogo Actividades";
+            this.cátalogoActividadesToolStripMenuItem.Click += new System.EventHandler(this.cátalogoActividadesToolStripMenuItem_Click);
             // 
             // asignaciónDeActividadesToolStripMenuItem
             // 

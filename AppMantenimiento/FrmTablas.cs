@@ -82,6 +82,10 @@ namespace AppMantenimiento
             numCorrectivosRealizados = Convert.ToString(filtroCorrectivo.Count);
             return numCorrectivosRealizados;
         }
+        private void MostrarPorcentajeTrabajador()
+        {
+
+        }
 
         private async void tmrResultados_Tick(object sender, EventArgs e)
         {

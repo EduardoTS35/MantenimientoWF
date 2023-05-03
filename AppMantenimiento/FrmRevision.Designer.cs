@@ -40,6 +40,10 @@
             this.cmbTrabajadores = new System.Windows.Forms.ComboBox();
             this.grpNotas = new System.Windows.Forms.GroupBox();
             this.txtNotas = new System.Windows.Forms.TextBox();
+            this.dtpDe = new System.Windows.Forms.DateTimePicker();
+            this.lblDe = new System.Windows.Forms.Label();
+            this.lblA = new System.Windows.Forms.Label();
+            this.dtpA = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dtgActividades)).BeginInit();
             this.grpOrden.SuspendLayout();
             this.grpNotas.SuspendLayout();
@@ -55,7 +59,7 @@
             this.dtgActividades.Name = "dtgActividades";
             this.dtgActividades.RowHeadersWidth = 51;
             this.dtgActividades.RowTemplate.Height = 24;
-            this.dtgActividades.Size = new System.Drawing.Size(580, 426);
+            this.dtgActividades.Size = new System.Drawing.Size(580, 503);
             this.dtgActividades.TabIndex = 1;
             this.dtgActividades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgActividades_CellContentClick);
             // 
@@ -63,6 +67,10 @@
             // 
             this.grpOrden.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpOrden.AutoSize = true;
+            this.grpOrden.Controls.Add(this.dtpA);
+            this.grpOrden.Controls.Add(this.lblA);
+            this.grpOrden.Controls.Add(this.lblDe);
+            this.grpOrden.Controls.Add(this.dtpDe);
             this.grpOrden.Controls.Add(this.bttQuitarFiltro);
             this.grpOrden.Controls.Add(this.bttImprimir);
             this.grpOrden.Controls.Add(this.lblMaquina);
@@ -73,14 +81,14 @@
             this.grpOrden.Controls.Add(this.cmbTrabajadores);
             this.grpOrden.Location = new System.Drawing.Point(598, 12);
             this.grpOrden.Name = "grpOrden";
-            this.grpOrden.Size = new System.Drawing.Size(278, 251);
+            this.grpOrden.Size = new System.Drawing.Size(278, 312);
             this.grpOrden.TabIndex = 7;
             this.grpOrden.TabStop = false;
             this.grpOrden.Text = "Filtros";
             // 
             // bttQuitarFiltro
             // 
-            this.bttQuitarFiltro.Location = new System.Drawing.Point(150, 173);
+            this.bttQuitarFiltro.Location = new System.Drawing.Point(150, 239);
             this.bttQuitarFiltro.Name = "bttQuitarFiltro";
             this.bttQuitarFiltro.Size = new System.Drawing.Size(100, 31);
             this.bttQuitarFiltro.TabIndex = 13;
@@ -90,7 +98,7 @@
             // 
             // bttImprimir
             // 
-            this.bttImprimir.Location = new System.Drawing.Point(25, 173);
+            this.bttImprimir.Location = new System.Drawing.Point(25, 239);
             this.bttImprimir.Name = "bttImprimir";
             this.bttImprimir.Size = new System.Drawing.Size(100, 31);
             this.bttImprimir.TabIndex = 12;
@@ -110,9 +118,9 @@
             // cmbMaquina
             // 
             this.cmbMaquina.FormattingEnabled = true;
-            this.cmbMaquina.Location = new System.Drawing.Point(130, 106);
+            this.cmbMaquina.Location = new System.Drawing.Point(118, 106);
             this.cmbMaquina.Name = "cmbMaquina";
-            this.cmbMaquina.Size = new System.Drawing.Size(134, 24);
+            this.cmbMaquina.Size = new System.Drawing.Size(146, 24);
             this.cmbMaquina.TabIndex = 10;
             this.cmbMaquina.SelectedIndexChanged += new System.EventHandler(this.cmbMaquina_SelectedIndexChanged);
             // 
@@ -128,9 +136,9 @@
             // cmbFiltroArea
             // 
             this.cmbFiltroArea.FormattingEnabled = true;
-            this.cmbFiltroArea.Location = new System.Drawing.Point(130, 63);
+            this.cmbFiltroArea.Location = new System.Drawing.Point(118, 63);
             this.cmbFiltroArea.Name = "cmbFiltroArea";
-            this.cmbFiltroArea.Size = new System.Drawing.Size(134, 24);
+            this.cmbFiltroArea.Size = new System.Drawing.Size(146, 24);
             this.cmbFiltroArea.TabIndex = 8;
             this.cmbFiltroArea.SelectedIndexChanged += new System.EventHandler(this.cmbFiltroArea_SelectedIndexChanged);
             // 
@@ -146,9 +154,9 @@
             // cmbTrabajadores
             // 
             this.cmbTrabajadores.FormattingEnabled = true;
-            this.cmbTrabajadores.Location = new System.Drawing.Point(130, 28);
+            this.cmbTrabajadores.Location = new System.Drawing.Point(118, 28);
             this.cmbTrabajadores.Name = "cmbTrabajadores";
-            this.cmbTrabajadores.Size = new System.Drawing.Size(134, 24);
+            this.cmbTrabajadores.Size = new System.Drawing.Size(146, 24);
             this.cmbTrabajadores.TabIndex = 6;
             this.cmbTrabajadores.SelectedIndexChanged += new System.EventHandler(this.cmbTrabajadores_SelectedIndexChanged);
             // 
@@ -157,7 +165,7 @@
             this.grpNotas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpNotas.AutoSize = true;
             this.grpNotas.Controls.Add(this.txtNotas);
-            this.grpNotas.Location = new System.Drawing.Point(598, 269);
+            this.grpNotas.Location = new System.Drawing.Point(598, 346);
             this.grpNotas.Name = "grpNotas";
             this.grpNotas.Size = new System.Drawing.Size(278, 169);
             this.grpNotas.TabIndex = 8;
@@ -175,12 +183,46 @@
             this.txtNotas.Size = new System.Drawing.Size(245, 98);
             this.txtNotas.TabIndex = 13;
             // 
+            // dtpDe
+            // 
+            this.dtpDe.Location = new System.Drawing.Point(118, 154);
+            this.dtpDe.Name = "dtpDe";
+            this.dtpDe.Size = new System.Drawing.Size(146, 22);
+            this.dtpDe.TabIndex = 14;
+            this.dtpDe.ValueChanged += new System.EventHandler(this.dtpDe_ValueChanged);
+            // 
+            // lblDe
+            // 
+            this.lblDe.AutoSize = true;
+            this.lblDe.Location = new System.Drawing.Point(22, 154);
+            this.lblDe.Name = "lblDe";
+            this.lblDe.Size = new System.Drawing.Size(31, 16);
+            this.lblDe.TabIndex = 15;
+            this.lblDe.Text = "De: ";
+            // 
+            // lblA
+            // 
+            this.lblA.AutoSize = true;
+            this.lblA.Location = new System.Drawing.Point(22, 196);
+            this.lblA.Name = "lblA";
+            this.lblA.Size = new System.Drawing.Size(19, 16);
+            this.lblA.TabIndex = 16;
+            this.lblA.Text = "A:";
+            // 
+            // dtpA
+            // 
+            this.dtpA.Location = new System.Drawing.Point(118, 191);
+            this.dtpA.Name = "dtpA";
+            this.dtpA.Size = new System.Drawing.Size(146, 22);
+            this.dtpA.TabIndex = 17;
+            this.dtpA.ValueChanged += new System.EventHandler(this.dtpA_ValueChanged);
+            // 
             // FrmRevision
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(881, 450);
+            this.ClientSize = new System.Drawing.Size(881, 527);
             this.Controls.Add(this.grpNotas);
             this.Controls.Add(this.grpOrden);
             this.Controls.Add(this.dtgActividades);
@@ -211,5 +253,9 @@
         private System.Windows.Forms.GroupBox grpNotas;
         private System.Windows.Forms.TextBox txtNotas;
         private System.Windows.Forms.Button bttQuitarFiltro;
+        private System.Windows.Forms.DateTimePicker dtpA;
+        private System.Windows.Forms.Label lblA;
+        private System.Windows.Forms.Label lblDe;
+        private System.Windows.Forms.DateTimePicker dtpDe;
     }
 }

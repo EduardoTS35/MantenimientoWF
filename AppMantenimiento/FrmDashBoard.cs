@@ -47,5 +47,10 @@ namespace AppMantenimiento
         {
             openChildForm(new FrmMantenimientoCorrectivo());
         }
+
+        private void cátalogoActividadesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmCatalogoActividades());
+        }
     }
 }

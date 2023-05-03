@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.grpIndicadores = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblNumCR = new System.Windows.Forms.Label();
@@ -52,32 +52,32 @@
             this.lblNumPD = new System.Windows.Forms.Label();
             this.lblPreventivoD = new System.Windows.Forms.Label();
             this.grpTablas = new System.Windows.Forms.GroupBox();
-            this.chrPreventivoMensual = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pnlChartCorrectivoVSPreventivo = new System.Windows.Forms.Panel();
+            this.chrPreventivoVsCorrectivo = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pnlChartCorrectivoMensual = new System.Windows.Forms.Panel();
             this.chrCorrectivoMensual = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pnlChrPreventivoMensual = new System.Windows.Forms.Panel();
+            this.chrPreventivoMensual = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.grpTrabajadores = new System.Windows.Forms.GroupBox();
             this.chrTrabajadores = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tmrResultados = new System.Windows.Forms.Timer(this.components);
-            this.pnlChrPreventivoMensual = new System.Windows.Forms.Panel();
-            this.pnlChartCorrectivoMensual = new System.Windows.Forms.Panel();
-            this.pnlChartCorrectivoVSPreventivo = new System.Windows.Forms.Panel();
-            this.chrPreventivoVsCorrectivo = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.grpFechas = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.grpIndicadores.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.grpTablas.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoMensual)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chrCorrectivoMensual)).BeginInit();
-            this.grpTrabajadores.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chrTrabajadores)).BeginInit();
-            this.pnlChrPreventivoMensual.SuspendLayout();
-            this.pnlChartCorrectivoMensual.SuspendLayout();
             this.pnlChartCorrectivoVSPreventivo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoVsCorrectivo)).BeginInit();
+            this.pnlChartCorrectivoMensual.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chrCorrectivoMensual)).BeginInit();
+            this.pnlChrPreventivoMensual.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoMensual)).BeginInit();
+            this.grpTrabajadores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chrTrabajadores)).BeginInit();
             this.grpFechas.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -178,9 +178,9 @@
             this.lblPreventivoD.AutoSize = true;
             this.lblPreventivoD.Location = new System.Drawing.Point(6, 8);
             this.lblPreventivoD.Name = "lblPreventivoD";
-            this.lblPreventivoD.Size = new System.Drawing.Size(114, 16);
+            this.lblPreventivoD.Size = new System.Drawing.Size(122, 16);
             this.lblPreventivoD.TabIndex = 0;
-            this.lblPreventivoD.Text = "Prevntivos del día";
+            this.lblPreventivoD.Text = "Preventivos del día";
             // 
             // grpTablas
             // 
@@ -197,22 +197,43 @@
             this.grpTablas.TabStop = false;
             this.grpTablas.Text = "Gráficos";
             // 
-            // chrPreventivoMensual
+            // pnlChartCorrectivoVSPreventivo
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chrPreventivoMensual.ChartAreas.Add(chartArea3);
-            this.chrPreventivoMensual.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.chrPreventivoMensual.Legends.Add(legend3);
-            this.chrPreventivoMensual.Location = new System.Drawing.Point(0, 0);
-            this.chrPreventivoMensual.Name = "chrPreventivoMensual";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chrPreventivoMensual.Series.Add(series3);
-            this.chrPreventivoMensual.Size = new System.Drawing.Size(220, 200);
-            this.chrPreventivoMensual.TabIndex = 0;
-            this.chrPreventivoMensual.Text = "chart1";
+            this.pnlChartCorrectivoVSPreventivo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlChartCorrectivoVSPreventivo.AutoSize = true;
+            this.pnlChartCorrectivoVSPreventivo.Controls.Add(this.chrPreventivoVsCorrectivo);
+            this.pnlChartCorrectivoVSPreventivo.Location = new System.Drawing.Point(16, 224);
+            this.pnlChartCorrectivoVSPreventivo.Name = "pnlChartCorrectivoVSPreventivo";
+            this.pnlChartCorrectivoVSPreventivo.Size = new System.Drawing.Size(584, 174);
+            this.pnlChartCorrectivoVSPreventivo.TabIndex = 4;
+            // 
+            // chrPreventivoVsCorrectivo
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chrPreventivoVsCorrectivo.ChartAreas.Add(chartArea1);
+            this.chrPreventivoVsCorrectivo.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chrPreventivoVsCorrectivo.Legends.Add(legend1);
+            this.chrPreventivoVsCorrectivo.Location = new System.Drawing.Point(0, 0);
+            this.chrPreventivoVsCorrectivo.Name = "chrPreventivoVsCorrectivo";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chrPreventivoVsCorrectivo.Series.Add(series1);
+            this.chrPreventivoVsCorrectivo.Size = new System.Drawing.Size(584, 174);
+            this.chrPreventivoVsCorrectivo.TabIndex = 2;
+            this.chrPreventivoVsCorrectivo.Text = "chart3";
+            // 
+            // pnlChartCorrectivoMensual
+            // 
+            this.pnlChartCorrectivoMensual.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlChartCorrectivoMensual.Controls.Add(this.chrCorrectivoMensual);
+            this.pnlChartCorrectivoMensual.Location = new System.Drawing.Point(242, 18);
+            this.pnlChartCorrectivoMensual.Name = "pnlChartCorrectivoMensual";
+            this.pnlChartCorrectivoMensual.Size = new System.Drawing.Size(358, 200);
+            this.pnlChartCorrectivoMensual.TabIndex = 3;
             // 
             // chrCorrectivoMensual
             // 
@@ -230,6 +251,34 @@
             this.chrCorrectivoMensual.Size = new System.Drawing.Size(358, 200);
             this.chrCorrectivoMensual.TabIndex = 0;
             this.chrCorrectivoMensual.Text = "chrCorrectivo";
+            // 
+            // pnlChrPreventivoMensual
+            // 
+            this.pnlChrPreventivoMensual.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlChrPreventivoMensual.AutoSize = true;
+            this.pnlChrPreventivoMensual.Controls.Add(this.chrPreventivoMensual);
+            this.pnlChrPreventivoMensual.Location = new System.Drawing.Point(16, 18);
+            this.pnlChrPreventivoMensual.Name = "pnlChrPreventivoMensual";
+            this.pnlChrPreventivoMensual.Size = new System.Drawing.Size(220, 200);
+            this.pnlChrPreventivoMensual.TabIndex = 2;
+            // 
+            // chrPreventivoMensual
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chrPreventivoMensual.ChartAreas.Add(chartArea3);
+            this.chrPreventivoMensual.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend3.Name = "Legend1";
+            this.chrPreventivoMensual.Legends.Add(legend3);
+            this.chrPreventivoMensual.Location = new System.Drawing.Point(0, 0);
+            this.chrPreventivoMensual.Name = "chrPreventivoMensual";
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chrPreventivoMensual.Series.Add(series3);
+            this.chrPreventivoMensual.Size = new System.Drawing.Size(220, 200);
+            this.chrPreventivoMensual.TabIndex = 0;
+            this.chrPreventivoMensual.Text = "chart1";
             // 
             // grpTrabajadores
             // 
@@ -265,55 +314,6 @@
             this.tmrResultados.Interval = 3000;
             this.tmrResultados.Tick += new System.EventHandler(this.tmrResultados_Tick);
             // 
-            // pnlChrPreventivoMensual
-            // 
-            this.pnlChrPreventivoMensual.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlChrPreventivoMensual.AutoSize = true;
-            this.pnlChrPreventivoMensual.Controls.Add(this.chrPreventivoMensual);
-            this.pnlChrPreventivoMensual.Location = new System.Drawing.Point(16, 18);
-            this.pnlChrPreventivoMensual.Name = "pnlChrPreventivoMensual";
-            this.pnlChrPreventivoMensual.Size = new System.Drawing.Size(220, 200);
-            this.pnlChrPreventivoMensual.TabIndex = 2;
-            // 
-            // pnlChartCorrectivoMensual
-            // 
-            this.pnlChartCorrectivoMensual.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlChartCorrectivoMensual.Controls.Add(this.chrCorrectivoMensual);
-            this.pnlChartCorrectivoMensual.Location = new System.Drawing.Point(242, 18);
-            this.pnlChartCorrectivoMensual.Name = "pnlChartCorrectivoMensual";
-            this.pnlChartCorrectivoMensual.Size = new System.Drawing.Size(358, 200);
-            this.pnlChartCorrectivoMensual.TabIndex = 3;
-            // 
-            // pnlChartCorrectivoVSPreventivo
-            // 
-            this.pnlChartCorrectivoVSPreventivo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlChartCorrectivoVSPreventivo.AutoSize = true;
-            this.pnlChartCorrectivoVSPreventivo.Controls.Add(this.chrPreventivoVsCorrectivo);
-            this.pnlChartCorrectivoVSPreventivo.Location = new System.Drawing.Point(16, 224);
-            this.pnlChartCorrectivoVSPreventivo.Name = "pnlChartCorrectivoVSPreventivo";
-            this.pnlChartCorrectivoVSPreventivo.Size = new System.Drawing.Size(584, 174);
-            this.pnlChartCorrectivoVSPreventivo.TabIndex = 4;
-            // 
-            // chrPreventivoVsCorrectivo
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chrPreventivoVsCorrectivo.ChartAreas.Add(chartArea1);
-            this.chrPreventivoVsCorrectivo.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chrPreventivoVsCorrectivo.Legends.Add(legend1);
-            this.chrPreventivoVsCorrectivo.Location = new System.Drawing.Point(0, 0);
-            this.chrPreventivoVsCorrectivo.Name = "chrPreventivoVsCorrectivo";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chrPreventivoVsCorrectivo.Series.Add(series1);
-            this.chrPreventivoVsCorrectivo.Size = new System.Drawing.Size(584, 174);
-            this.chrPreventivoVsCorrectivo.TabIndex = 2;
-            this.chrPreventivoVsCorrectivo.Text = "chart3";
-            // 
             // grpFechas
             // 
             this.grpFechas.Controls.Add(this.radioButton3);
@@ -326,16 +326,16 @@
             this.grpFechas.TabStop = false;
             this.grpFechas.Text = "Periodo";
             // 
-            // radioButton1
+            // radioButton3
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(46, 21);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(79, 20);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Mensual";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(441, 21);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(82, 20);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "Semanal";
+            this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
@@ -348,16 +348,16 @@
             this.radioButton2.Text = "Quincenal";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // radioButton1
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(441, 21);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(82, 20);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Semanal";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(46, 21);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(79, 20);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Mensual";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // FrmTablas
             // 
@@ -381,14 +381,14 @@
             this.panel1.PerformLayout();
             this.grpTablas.ResumeLayout(false);
             this.grpTablas.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoMensual)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chrCorrectivoMensual)).EndInit();
-            this.grpTrabajadores.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chrTrabajadores)).EndInit();
-            this.pnlChrPreventivoMensual.ResumeLayout(false);
-            this.pnlChartCorrectivoMensual.ResumeLayout(false);
             this.pnlChartCorrectivoVSPreventivo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoVsCorrectivo)).EndInit();
+            this.pnlChartCorrectivoMensual.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chrCorrectivoMensual)).EndInit();
+            this.pnlChrPreventivoMensual.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chrPreventivoMensual)).EndInit();
+            this.grpTrabajadores.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chrTrabajadores)).EndInit();
             this.grpFechas.ResumeLayout(false);
             this.grpFechas.PerformLayout();
             this.ResumeLayout(false);

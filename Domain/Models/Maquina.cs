@@ -30,6 +30,10 @@ namespace Domain.Models
             DataTable table = await Task.FromResult(userDao.MostrarMaquinasArea(id));
             return table;
         }
+        public void AgregarMaquina()
+        {
+            userDao
+        }
         #endregion
     }
 }
