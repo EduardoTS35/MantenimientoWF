@@ -43,6 +43,20 @@ namespace Domain.Models
         {
             userDao.EliminarCorrectivo(id);
         }
+        #region Indicadores
+        public DataTable RegistroCorrectivoDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.RegistroCorrectivoDashboard(fechaInicio,fechaFin);
+            return table;
+        }
+        public float[] CorrectivoVsPreventivoDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            _ = new float[2];
+            float[] array = userDao.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin);
+            return array;
+        }
+        #endregion
         #endregion
     }
 }

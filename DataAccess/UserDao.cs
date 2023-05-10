@@ -184,25 +184,6 @@ namespace DataAccess
             }
         }
         #region Indicadores
-        public DataTable MostrarActividadesRestrasadas(DateTime fechaInicio, DateTime fechaFin)
-        {
-            SqlDataReader leer;
-            DataTable table = new DataTable();
-            using (var connection = GetConnection())
-            {
-                connection.Open();
-                using (var command = new SqlCommand())
-                {
-                    command.Connection = connection;
-                    command.CommandText = "MostrarActividadesRestrasadas";
-                    command.CommandType = CommandType.StoredProcedure;
-                    leer = command.ExecuteReader();
-                    table.Load(leer);
-                    connection.Close();
-                    return table;
-                }
-            }
-        }
         public DataTable MostrarActividadesRealizadas(DateTime fechaInicio, DateTime fechaFin)
         {
             SqlDataReader leer;
@@ -213,8 +194,31 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "MostrarActividadesRestrasadas";
+                    command.CommandText = "ObtenerActividadesRealizadasPorFecha";
                     command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable RegistroPreventivoDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "RegistroPreventivoDashboard";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -311,6 +315,52 @@ namespace DataAccess
                 connection.Close();
             }
         }
+        #region Indicadores
+        public DataTable RegistroCorrectivoDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "RegistroCorrectivoDashboard";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public float[] CorrectivoVsPreventivoDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "PreventivoVsCorrectivoDashboard";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    command.Parameters.Add("@conteoHrsCorrectivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                    command.Parameters.Add("@conteoHrsPreventivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                    command.ExecuteNonQuery();
+                    float[] array = new float[2];
+                    array[0] = (float)command.Parameters["@conteoHrsCorrectivo"].Value;
+                    array[1] = (float)command.Parameters["@conteoHrsPreventivo"].Value;
+                    return array;
+                }
+            }
+        }
+
+        #endregion
         #endregion
         #region Listado Trabajadores Correctivos
         public DataTable MostrarListado()

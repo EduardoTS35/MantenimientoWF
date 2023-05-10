@@ -49,16 +49,16 @@ namespace Domain.Models
             userDao.EliminarRegistroActividad(id);
         }
         #region Indicadores
-        public DataTable MostrarActividadesRestrasadas(DateTime inicio,DateTime fin)
-        {
-            _ = new DataTable();
-            DataTable table = userDao.MostrarActividadesRestrasadas(inicio,fin);
-            return table;
-        }
         public DataTable MostrarActividadesRealizadas(DateTime inicio, DateTime fin)
         {
             _ = new DataTable();
             DataTable table = userDao.MostrarActividadesRealizadas(inicio, fin);
+            return table;
+        }
+        public DataTable RegistroPreventivoDashboard(DateTime inicio, DateTime fin)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.RegistroPreventivoDashboard(inicio, fin);
             return table;
         }
         #endregion

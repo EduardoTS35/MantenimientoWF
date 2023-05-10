@@ -48,7 +48,7 @@
             this.mantenimientoCorrectivoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1086, 30);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -59,7 +59,7 @@
             this.asignaciónDeActividadesToolStripMenuItem,
             this.revisiónDeActividadesToolStripMenuItem});
             this.actividadesToolStripMenuItem.Name = "actividadesToolStripMenuItem";
-            this.actividadesToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
+            this.actividadesToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
             this.actividadesToolStripMenuItem.Text = "Mantenimiento Preventivo";
             // 
             // cátalogoActividadesToolStripMenuItem
@@ -88,7 +88,7 @@
             this.mantenimientoCorrectivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.agregarActividadCorrectivaToolStripMenuItem});
             this.mantenimientoCorrectivoToolStripMenuItem.Name = "mantenimientoCorrectivoToolStripMenuItem";
-            this.mantenimientoCorrectivoToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.mantenimientoCorrectivoToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
             this.mantenimientoCorrectivoToolStripMenuItem.Text = "Mantenimiento Correctivo";
             // 
             // agregarActividadCorrectivaToolStripMenuItem
@@ -101,21 +101,22 @@
             // pnlContenedor
             // 
             this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContenedor.Location = new System.Drawing.Point(0, 28);
+            this.pnlContenedor.Location = new System.Drawing.Point(0, 30);
             this.pnlContenedor.Name = "pnlContenedor";
-            this.pnlContenedor.Size = new System.Drawing.Size(800, 422);
+            this.pnlContenedor.Size = new System.Drawing.Size(1086, 679);
             this.pnlContenedor.TabIndex = 1;
             // 
             // FrmDashBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1086, 709);
             this.Controls.Add(this.pnlContenedor);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmDashBoard";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "App Mantenimiento";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

@@ -78,3 +78,4 @@ C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMante
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmTablas.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCatalogoActividades.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmChildCatalogoActividades.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCatalogoMaquinaria.resources

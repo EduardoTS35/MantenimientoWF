@@ -26,7 +26,7 @@ namespace AppMantenimiento
         }
         private void GuardarMaquinaria()
         {
-            maquina.
+            
         }
         #endregion
     }
