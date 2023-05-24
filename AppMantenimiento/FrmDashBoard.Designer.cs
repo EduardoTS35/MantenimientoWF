@@ -37,6 +37,7 @@
             this.mantenimientoCorrectivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.agregarActividadCorrectivaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlContenedor = new System.Windows.Forms.Panel();
+            this.bttHome = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,11 +45,12 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bttHome,
             this.actividadesToolStripMenuItem,
             this.mantenimientoCorrectivoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1086, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1086, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -59,7 +61,7 @@
             this.asignaciónDeActividadesToolStripMenuItem,
             this.revisiónDeActividadesToolStripMenuItem});
             this.actividadesToolStripMenuItem.Name = "actividadesToolStripMenuItem";
-            this.actividadesToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
+            this.actividadesToolStripMenuItem.Size = new System.Drawing.Size(197, 24);
             this.actividadesToolStripMenuItem.Text = "Mantenimiento Preventivo";
             // 
             // cátalogoActividadesToolStripMenuItem
@@ -88,7 +90,7 @@
             this.mantenimientoCorrectivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.agregarActividadCorrectivaToolStripMenuItem});
             this.mantenimientoCorrectivoToolStripMenuItem.Name = "mantenimientoCorrectivoToolStripMenuItem";
-            this.mantenimientoCorrectivoToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.mantenimientoCorrectivoToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
             this.mantenimientoCorrectivoToolStripMenuItem.Text = "Mantenimiento Correctivo";
             // 
             // agregarActividadCorrectivaToolStripMenuItem
@@ -101,10 +103,18 @@
             // pnlContenedor
             // 
             this.pnlContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContenedor.Location = new System.Drawing.Point(0, 30);
+            this.pnlContenedor.Location = new System.Drawing.Point(0, 28);
             this.pnlContenedor.Name = "pnlContenedor";
-            this.pnlContenedor.Size = new System.Drawing.Size(1086, 679);
+            this.pnlContenedor.Size = new System.Drawing.Size(1086, 681);
             this.pnlContenedor.TabIndex = 1;
+            // 
+            // bttHome
+            // 
+            this.bttHome.Image = ((System.Drawing.Image)(resources.GetObject("bttHome.Image")));
+            this.bttHome.Name = "bttHome";
+            this.bttHome.Size = new System.Drawing.Size(84, 24);
+            this.bttHome.Text = "Home";
+            this.bttHome.Click += new System.EventHandler(this.bttHome_Click);
             // 
             // FrmDashBoard
             // 
@@ -135,6 +145,7 @@
         private System.Windows.Forms.ToolStripMenuItem mantenimientoCorrectivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem agregarActividadCorrectivaToolStripMenuItem;
         private System.Windows.Forms.Panel pnlContenedor;
+        private System.Windows.Forms.ToolStripMenuItem bttHome;
     }
 }
 

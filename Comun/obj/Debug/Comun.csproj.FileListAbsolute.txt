@@ -1,0 +1,6 @@
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\bin\Debug\Comun.dll
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\bin\Debug\Comun.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\obj\Debug\Comun.csproj.CoreCompileInputs.cache
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\obj\Debug\Comun.dll
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\obj\Debug\Comun.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\Comun\obj\Debug\Comun.csproj.AssemblyReference.cache

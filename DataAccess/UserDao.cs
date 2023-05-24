@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -357,6 +358,27 @@ namespace DataAccess
                     array[1] = (float)command.Parameters["@conteoHrsPreventivo"].Value;
                     return array;
                 }
+            }        
+        }
+        public DataTable TiempoParoMaquinaDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "TiempoParoMaquinaDashboard";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
             }
         }
 
@@ -522,6 +544,44 @@ namespace DataAccess
                 }
             }
         }
+        public bool Login(string user, string pass)
+        {
+            using (SqlConnection sqlConnection = GetConnection())
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.Connection = sqlConnection;
+                    sqlCommand.CommandText = "SELECT * FROM trabajadores WHERE usuario=@user AND pass COLLATE Latin1_General_CS_AS =@pass";
+                    sqlCommand.Parameters.AddWithValue("@user", user);
+                    sqlCommand.Parameters.AddWithValue("@pass", pass);
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (sqlDataReader.HasRows)
+                        {
+                            while (sqlDataReader.Read())
+                            {
+                                Usuario.Nombre = sqlDataReader.GetString(2);
+                                Usuario.Apellido = sqlDataReader.GetString(3);
+                                Usuario.Puesto = sqlDataReader.GetString(4);
+                                Usuario.IdArea = sqlDataReader.GetInt32(1);
+                                Usuario.IdTrabajador = sqlDataReader.GetInt32(0);
+                                Usuario.User = sqlDataReader.GetString(5);
+                                Usuario.IdRol = sqlDataReader.GetInt32(7);
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         #endregion
     }
 }

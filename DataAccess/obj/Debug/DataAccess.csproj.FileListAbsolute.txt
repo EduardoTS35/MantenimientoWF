@@ -4,3 +4,6 @@ C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.csp
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.csproj.CoreCompileInputs.cache
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\bin\Debug\Common.dll
+C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\bin\Debug\Common.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.csproj.CopyComplete

@@ -117,6 +117,12 @@
     <Compile Include="FrmCatalogoActividades.Designer.cs">
       <DependentUpon>FrmCatalogoActividades.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTablas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +168,9 @@
     <EmbeddedResource Include="FrmChildCatalogoActividades.resx">
       <DependentUpon>FrmChildCatalogoActividades.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmTablas.resx">
       <DependentUpon>FrmTablas.cs</DependentUpon>
     </EmbeddedResource>
@@ -202,6 +211,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{5cacc935-ec2f-41fb-9337-e7df8c55d5ea}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{1ef8eebd-89f1-4254-8b0f-a1fe6ffe9df2}</Project>
       <Name>Domain</Name>

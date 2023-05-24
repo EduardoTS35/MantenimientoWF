@@ -52,5 +52,10 @@ namespace AppMantenimiento
         {
             openChildForm(new FrmCatalogoActividades());
         }
+
+        private void bttHome_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmTablas());
+        }
     }
 }

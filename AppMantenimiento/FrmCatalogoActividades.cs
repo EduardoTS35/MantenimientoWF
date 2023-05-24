@@ -33,7 +33,6 @@ namespace AppMantenimiento
             {
                 await MostrarAreaAsync();
             }).GetAwaiter().GetResult();
-            InitializeComponent();
             
         }
         #region Métodos
@@ -141,6 +140,36 @@ namespace AppMantenimiento
         private void dtgActividades_CellClick(object sender, DataGridViewCellEventArgs e)
         {
            //Agregar edición de actividades
+        }
+
+        private void dtgActividades_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dtgActividades.Columns["Editar"].Index && e.RowIndex >= 0)
+            {
+                actividad.IdActividad = (int)dtgActividades.Rows[e.RowIndex].Cells["idActividad"].Value;
+                actividad.IdArea = (int)dtgActividades.Rows[e.RowIndex].Cells["idArea"].Value;
+                actividad.IdMaquina = (int)dtgActividades.Rows[e.RowIndex].Cells["idMaquina"].Value;
+                actividad.NombreActividad = dtgActividades.Rows[e.RowIndex].Cells["nombreActividad"].Value.ToString();
+                actividad.RecursoHumano = (int)dtgActividades.Rows[e.RowIndex].Cells["recursoHumano"].Value;
+                actividad.Descripcion = dtgActividades.Rows[e.RowIndex].Cells["descripcion"].Value.ToString();
+                actividad.Tiempo = Convert.ToDouble(dtgActividades.Rows[e.RowIndex].Cells["tiempo"].Value);
+                actividad.Periodo = (int)dtgActividades.Rows[e.RowIndex].Cells["periodo"].Value;
+                actividad.FechaProgramada = Convert.ToDateTime(dtgActividades.Rows[e.RowIndex].Cells["fechaProgramada"].Value);
+                actividad.Asignada = (int)dtgActividades.Rows[e.RowIndex].Cells["asignada"].Value;
+                AgregarEditarActividad();
+            }
+            if (e.ColumnIndex == dtgActividades.Columns["Eliminar"].Index && e.RowIndex >= 0)
+            {
+                switch (MessageBox.Show("¿Estás seguro de elimar la actividad?", "Advertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation))
+                {
+                    case DialogResult.Yes:
+                        actividad.IdActividad = (int)dtgActividades.Rows[e.RowIndex].Cells["idActividad"].Value;
+                        actividad.EliminarActividad(actividad.IdActividad);
+                        MessageBox.Show("Se eliminó corractamente la actividad", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                        dtgActividades.Rows.RemoveAt(e.RowIndex);
+                        break;
+                }
+            }
         }
     }
 }

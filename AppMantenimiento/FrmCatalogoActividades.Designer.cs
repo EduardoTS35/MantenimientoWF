@@ -52,7 +52,7 @@
             this.dtgActividades.RowTemplate.Height = 24;
             this.dtgActividades.Size = new System.Drawing.Size(580, 459);
             this.dtgActividades.TabIndex = 2;
-            this.dtgActividades.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgActividades_CellClick);
+            this.dtgActividades.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgActividades_CellContentClick);
             // 
             // grpFiltros
             // 

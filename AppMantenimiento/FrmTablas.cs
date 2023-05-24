@@ -28,7 +28,7 @@ namespace AppMantenimiento
         DataView filtroCorrectivo;
         //Fechas
         string fechaDelDia= DateTime.Now.ToString("yyyy-MM-dd");
-        DateTime primerDiaMes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
+        DateTime primerDiaMes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         DateTime ultimoDiaMes;
 
         public FrmTablas()
@@ -36,10 +36,12 @@ namespace AppMantenimiento
             InitializeComponent();
             tmrResultados.Start();
             ultimoDiaMes = primerDiaMes.AddMonths(1).AddDays(-1);
+            _ = MostrarResultados();
             MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(primerDiaMes, ultimoDiaMes));
             MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(primerDiaMes, ultimoDiaMes));
             MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
             MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(primerDiaMes, ultimoDiaMes));
+            MostrarDatosMaquinaria(correctivo.TiempoParoMaquinaDashboard(primerDiaMes, ultimoDiaMes));
         }
         private async Task MostrarResultados()
         {
@@ -169,42 +171,78 @@ namespace AppMantenimiento
         }
         private void MostrarPreventivoVsCorrectivo(float[] datos)
         {
-            // Limpiamos los datos previamente agregados al chart
+
             chrPreventivoVsCorrectivo.Series.Clear();
-
-            // Creamos una nueva serie de datos para el chart
-            Series serieDatos = new Series();
-            serieDatos.ChartType = SeriesChartType.Doughnut;
-
-            // Añadimos los datos a la serie
-            DataPoint puntoCorrectivo = new DataPoint();
-            puntoCorrectivo.AxisLabel = "Correctivo";
-            puntoCorrectivo.YValues = new double[] { datos[0] };
-            puntoCorrectivo.LegendText = string.Format("{0}: {1} ({2:P0})", puntoCorrectivo.AxisLabel, puntoCorrectivo.YValues[0], puntoCorrectivo.YValues[0] / datos.Sum());
-            serieDatos.Points.Add(puntoCorrectivo);
-
-            DataPoint puntoPreventivo = new DataPoint();
-            puntoPreventivo.AxisLabel = "Preventivo";
-            puntoPreventivo.YValues = new double[] { datos[1] };
-            puntoPreventivo.LegendText = string.Format("{0}: {1} ({2:P0})", puntoPreventivo.AxisLabel, puntoPreventivo.YValues[0], puntoPreventivo.YValues[0] / datos.Sum());
-            serieDatos.Points.Add(puntoPreventivo);
-
-            // Agregamos la serie al chart
-            chrPreventivoVsCorrectivo.Series.Add(serieDatos);
-
-            // Configuramos el chart
+            Series series = new Series();
+            series.ChartType = SeriesChartType.Doughnut;
+            DataPoint dataPoint = new DataPoint();
+            dataPoint.AxisLabel = "Correctivo";
+            dataPoint.YValues = new double[1] { datos[0] };
+            dataPoint.LegendText = $"{dataPoint.AxisLabel}: {dataPoint.YValues[0]} ({dataPoint.YValues[0] / (double)datos.Sum():P0})";
+            series.Points.Add(dataPoint);
+            DataPoint dataPoint2 = new DataPoint();
+            dataPoint2.AxisLabel = "Preventivo";
+            dataPoint2.YValues = new double[1] { datos[1] };
+            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {dataPoint2.YValues[0]} ({dataPoint2.YValues[0] / (double)datos.Sum():P0})";
+            series.Points.Add(dataPoint2);
+            chrPreventivoVsCorrectivo.Series.Add(series);
             chrPreventivoVsCorrectivo.Titles.Clear();
             chrPreventivoVsCorrectivo.Titles.Add("Horas trabajadas");
-
-            // Configurar el formato de las etiquetas
             chrPreventivoVsCorrectivo.Series[0].Label = "#VALX";
+
+           
+        }
+        private void MostrarDatosMaquinaria(DataTable tabla)
+        {
+            chrTiempoParo.Series.Clear();
+            Series series = new Series();
+            series.ChartType = SeriesChartType.Doughnut;
+            series["PieLabelStyle"] = "Inside";
+            series["PieLineColor"] = "Black";
+            foreach (DataRow row in tabla.Rows)
+            {
+                string text = row["descripcion"].ToString();
+                double num = Convert.ToDouble(row["tiempoParo"]);
+                DataPoint dataPoint = new DataPoint();
+                dataPoint.Label = text + ": " + Convert.ToString(num);
+                dataPoint.YValues = new double[1] { num };
+                dataPoint.CustomProperties = "PieLabelStyle=Disabled";
+                series.Points.Add(dataPoint);
+            }
+            chrTiempoParo.Series.Add(series);
+            chrTiempoParo.Titles.Clear();
+            chrTiempoParo.Titles.Add("Tiempo de paro por maquinaria");
+            chrTiempoParo.ChartAreas[0].Area3DStyle.Enable3D = true;
+            chrTiempoParo.ChartAreas[0].AxisX.Enabled = AxisEnabled.False;
+            chrTiempoParo.ChartAreas[0].AxisY.Enabled = AxisEnabled.False;
+            chrTiempoParo.Legends.Add(new Legend("Maquinas"));
+            chrTiempoParo.Legends[0].Docking = Docking.Right;
+            chrTiempoParo.Legends[0].CustomItems.Clear();
         }
 
-
-
-        private async void tmrResultados_Tick(object sender, EventArgs e)
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            await MostrarResultados();
+            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(primerDiaMes, ultimoDiaMes));
+            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(primerDiaMes, ultimoDiaMes));
+            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
+            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(primerDiaMes, ultimoDiaMes));
+            MostrarDatosMaquinaria(correctivo.TiempoParoMaquinaDashboard(primerDiaMes, ultimoDiaMes));
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
         }
     }
 }

@@ -7,3 +7,5 @@ C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.csproj.Core
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.csproj.CopyComplete
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.dll
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\Domain\bin\Debug\Common.dll
+C:\Users\eduar\source\repos\AppMantenimiento\Domain\bin\Debug\Common.pdb

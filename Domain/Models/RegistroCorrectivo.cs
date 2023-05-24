@@ -56,6 +56,12 @@ namespace Domain.Models
             float[] array = userDao.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin);
             return array;
         }
+        public DataTable TiempoParoMaquinaDashboard(DateTime fechaInicio, DateTime fechaFin)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.TiempoParoMaquinaDashboard(fechaInicio, fechaFin);
+            return table;
+        }
         #endregion
         #endregion
     }

@@ -27,6 +27,10 @@ namespace Domain.Models
             DataTable table = await Task.FromResult(userDao.MostrarTrabajadores());
             return table;
         }
+        public bool Login(string user, string pass)
+        {
+            return userDao.Login(user, pass);
+        }
         #endregion
     }
 }
