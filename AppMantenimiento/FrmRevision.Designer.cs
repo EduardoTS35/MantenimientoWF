@@ -30,6 +30,10 @@
         {
             this.dtgActividades = new System.Windows.Forms.DataGridView();
             this.grpOrden = new System.Windows.Forms.GroupBox();
+            this.dtpA = new System.Windows.Forms.DateTimePicker();
+            this.lblA = new System.Windows.Forms.Label();
+            this.lblDe = new System.Windows.Forms.Label();
+            this.dtpDe = new System.Windows.Forms.DateTimePicker();
             this.bttQuitarFiltro = new System.Windows.Forms.Button();
             this.bttImprimir = new System.Windows.Forms.Button();
             this.lblMaquina = new System.Windows.Forms.Label();
@@ -40,10 +44,8 @@
             this.cmbTrabajadores = new System.Windows.Forms.ComboBox();
             this.grpNotas = new System.Windows.Forms.GroupBox();
             this.txtNotas = new System.Windows.Forms.TextBox();
-            this.dtpDe = new System.Windows.Forms.DateTimePicker();
-            this.lblDe = new System.Windows.Forms.Label();
-            this.lblA = new System.Windows.Forms.Label();
-            this.dtpA = new System.Windows.Forms.DateTimePicker();
+            this.dtpFechaRealizacion = new System.Windows.Forms.DateTimePicker();
+            this.chcFechaSeleccionada = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgActividades)).BeginInit();
             this.grpOrden.SuspendLayout();
             this.grpNotas.SuspendLayout();
@@ -85,6 +87,40 @@
             this.grpOrden.TabIndex = 7;
             this.grpOrden.TabStop = false;
             this.grpOrden.Text = "Filtros";
+            // 
+            // dtpA
+            // 
+            this.dtpA.Location = new System.Drawing.Point(118, 191);
+            this.dtpA.Name = "dtpA";
+            this.dtpA.Size = new System.Drawing.Size(146, 22);
+            this.dtpA.TabIndex = 17;
+            this.dtpA.ValueChanged += new System.EventHandler(this.dtpA_ValueChanged);
+            // 
+            // lblA
+            // 
+            this.lblA.AutoSize = true;
+            this.lblA.Location = new System.Drawing.Point(22, 196);
+            this.lblA.Name = "lblA";
+            this.lblA.Size = new System.Drawing.Size(19, 16);
+            this.lblA.TabIndex = 16;
+            this.lblA.Text = "A:";
+            // 
+            // lblDe
+            // 
+            this.lblDe.AutoSize = true;
+            this.lblDe.Location = new System.Drawing.Point(22, 154);
+            this.lblDe.Name = "lblDe";
+            this.lblDe.Size = new System.Drawing.Size(31, 16);
+            this.lblDe.TabIndex = 15;
+            this.lblDe.Text = "De: ";
+            // 
+            // dtpDe
+            // 
+            this.dtpDe.Location = new System.Drawing.Point(118, 154);
+            this.dtpDe.Name = "dtpDe";
+            this.dtpDe.Size = new System.Drawing.Size(146, 22);
+            this.dtpDe.TabIndex = 14;
+            this.dtpDe.ValueChanged += new System.EventHandler(this.dtpDe_ValueChanged);
             // 
             // bttQuitarFiltro
             // 
@@ -164,58 +200,45 @@
             // 
             this.grpNotas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpNotas.AutoSize = true;
+            this.grpNotas.Controls.Add(this.chcFechaSeleccionada);
+            this.grpNotas.Controls.Add(this.dtpFechaRealizacion);
             this.grpNotas.Controls.Add(this.txtNotas);
-            this.grpNotas.Location = new System.Drawing.Point(598, 346);
+            this.grpNotas.Location = new System.Drawing.Point(598, 330);
             this.grpNotas.Name = "grpNotas";
-            this.grpNotas.Size = new System.Drawing.Size(278, 169);
+            this.grpNotas.Size = new System.Drawing.Size(278, 185);
             this.grpNotas.TabIndex = 8;
             this.grpNotas.TabStop = false;
-            this.grpNotas.Text = "Notas";
+            this.grpNotas.Text = "Información";
             // 
             // txtNotas
             // 
             this.txtNotas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNotas.Location = new System.Drawing.Point(19, 50);
+            this.txtNotas.Location = new System.Drawing.Point(19, 83);
             this.txtNotas.MaxLength = 500;
             this.txtNotas.Multiline = true;
             this.txtNotas.Name = "txtNotas";
-            this.txtNotas.Size = new System.Drawing.Size(245, 98);
+            this.txtNotas.Size = new System.Drawing.Size(245, 81);
             this.txtNotas.TabIndex = 13;
             // 
-            // dtpDe
+            // dtpFechaRealizacion
             // 
-            this.dtpDe.Location = new System.Drawing.Point(118, 154);
-            this.dtpDe.Name = "dtpDe";
-            this.dtpDe.Size = new System.Drawing.Size(146, 22);
-            this.dtpDe.TabIndex = 14;
-            this.dtpDe.ValueChanged += new System.EventHandler(this.dtpDe_ValueChanged);
+            this.dtpFechaRealizacion.Enabled = false;
+            this.dtpFechaRealizacion.Location = new System.Drawing.Point(90, 41);
+            this.dtpFechaRealizacion.Name = "dtpFechaRealizacion";
+            this.dtpFechaRealizacion.Size = new System.Drawing.Size(174, 22);
+            this.dtpFechaRealizacion.TabIndex = 15;
             // 
-            // lblDe
+            // chcFechaSeleccionada
             // 
-            this.lblDe.AutoSize = true;
-            this.lblDe.Location = new System.Drawing.Point(22, 154);
-            this.lblDe.Name = "lblDe";
-            this.lblDe.Size = new System.Drawing.Size(31, 16);
-            this.lblDe.TabIndex = 15;
-            this.lblDe.Text = "De: ";
-            // 
-            // lblA
-            // 
-            this.lblA.AutoSize = true;
-            this.lblA.Location = new System.Drawing.Point(22, 196);
-            this.lblA.Name = "lblA";
-            this.lblA.Size = new System.Drawing.Size(19, 16);
-            this.lblA.TabIndex = 16;
-            this.lblA.Text = "A:";
-            // 
-            // dtpA
-            // 
-            this.dtpA.Location = new System.Drawing.Point(118, 191);
-            this.dtpA.Name = "dtpA";
-            this.dtpA.Size = new System.Drawing.Size(146, 22);
-            this.dtpA.TabIndex = 17;
-            this.dtpA.ValueChanged += new System.EventHandler(this.dtpA_ValueChanged);
+            this.chcFechaSeleccionada.AutoSize = true;
+            this.chcFechaSeleccionada.Location = new System.Drawing.Point(17, 41);
+            this.chcFechaSeleccionada.Name = "chcFechaSeleccionada";
+            this.chcFechaSeleccionada.Size = new System.Drawing.Size(67, 20);
+            this.chcFechaSeleccionada.TabIndex = 16;
+            this.chcFechaSeleccionada.Text = "Fecha";
+            this.chcFechaSeleccionada.UseVisualStyleBackColor = true;
+            this.chcFechaSeleccionada.CheckedChanged += new System.EventHandler(this.chcFechaSeleccionada_CheckedChanged);
             // 
             // FrmRevision
             // 
@@ -257,5 +280,7 @@
         private System.Windows.Forms.Label lblA;
         private System.Windows.Forms.Label lblDe;
         private System.Windows.Forms.DateTimePicker dtpDe;
+        private System.Windows.Forms.CheckBox chcFechaSeleccionada;
+        private System.Windows.Forms.DateTimePicker dtpFechaRealizacion;
     }
 }

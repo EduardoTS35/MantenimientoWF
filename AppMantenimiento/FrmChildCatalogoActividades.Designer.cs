@@ -133,6 +133,11 @@
             // nmrPeriodo
             // 
             this.nmrPeriodo.Location = new System.Drawing.Point(51, 333);
+            this.nmrPeriodo.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.nmrPeriodo.Name = "nmrPeriodo";
             this.nmrPeriodo.Size = new System.Drawing.Size(300, 22);
             this.nmrPeriodo.TabIndex = 9;

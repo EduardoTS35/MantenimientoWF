@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDashBoard));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.bttHome = new System.Windows.Forms.ToolStripMenuItem();
             this.actividadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cátalogoActividadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.asignaciónDeActividadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,7 +38,8 @@
             this.mantenimientoCorrectivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.agregarActividadCorrectivaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlContenedor = new System.Windows.Forms.Panel();
-            this.bttHome = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reporteGeneralToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,12 +49,21 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bttHome,
             this.actividadesToolStripMenuItem,
-            this.mantenimientoCorrectivoToolStripMenuItem});
+            this.mantenimientoCorrectivoToolStripMenuItem,
+            this.reportesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1086, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // bttHome
+            // 
+            this.bttHome.Image = ((System.Drawing.Image)(resources.GetObject("bttHome.Image")));
+            this.bttHome.Name = "bttHome";
+            this.bttHome.Size = new System.Drawing.Size(84, 24);
+            this.bttHome.Text = "Home";
+            this.bttHome.Click += new System.EventHandler(this.bttHome_Click);
             // 
             // actividadesToolStripMenuItem
             // 
@@ -108,13 +119,20 @@
             this.pnlContenedor.Size = new System.Drawing.Size(1086, 681);
             this.pnlContenedor.TabIndex = 1;
             // 
-            // bttHome
+            // reportesToolStripMenuItem
             // 
-            this.bttHome.Image = ((System.Drawing.Image)(resources.GetObject("bttHome.Image")));
-            this.bttHome.Name = "bttHome";
-            this.bttHome.Size = new System.Drawing.Size(84, 24);
-            this.bttHome.Text = "Home";
-            this.bttHome.Click += new System.EventHandler(this.bttHome_Click);
+            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reporteGeneralToolStripMenuItem});
+            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(82, 24);
+            this.reportesToolStripMenuItem.Text = "Reportes";
+            // 
+            // reporteGeneralToolStripMenuItem
+            // 
+            this.reporteGeneralToolStripMenuItem.Name = "reporteGeneralToolStripMenuItem";
+            this.reporteGeneralToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.reporteGeneralToolStripMenuItem.Text = "Reporte General";
+            this.reporteGeneralToolStripMenuItem.Click += new System.EventHandler(this.reporteGeneralToolStripMenuItem_Click);
             // 
             // FrmDashBoard
             // 
@@ -146,6 +164,8 @@
         private System.Windows.Forms.ToolStripMenuItem agregarActividadCorrectivaToolStripMenuItem;
         private System.Windows.Forms.Panel pnlContenedor;
         private System.Windows.Forms.ToolStripMenuItem bttHome;
+        private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reporteGeneralToolStripMenuItem;
     }
 }
 

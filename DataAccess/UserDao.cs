@@ -227,6 +227,33 @@ namespace DataAccess
                 }
             }
         }
+        public DataTable ObtenerPreventivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT *FROM registro_actividades a " +
+                        "INNER JOIN maquinaria m " +
+                        "ON a.idMaquina=m.idMaquina " +
+                        "INNER JOIN trabajadores t " +
+                        "ON a.idTrabajador=t.idTrabajador " +
+                        "WHERE m.idArea=@idArea AND a.fechaRealizacion BETWEEN @fechaInicio AND @fechaFin " +
+                        "AND a.fechaProgramada BETWEEN DATEFROMPARTS(YEAR(@fechaInicio), MONTH(@fechaInicio), 1) AND EOMONTH(@fechaInicio)" ;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    command.Parameters.AddWithValue("@idArea", idArea);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
         #endregion
         #endregion
         #region Mantenimeinto Correctivo
@@ -381,7 +408,55 @@ namespace DataAccess
                 }
             }
         }
-
+        public float[] CorrectivoVsPreventivoArea(DateTime fechaInicio, DateTime fechaFin,int idArea)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "PreventivoVsCorrectivoArea";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    command.Parameters.AddWithValue("@idArea", idArea);
+                    command.Parameters.Add("@conteoHrsCorrectivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                    command.Parameters.Add("@conteoHrsPreventivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                    command.ExecuteNonQuery();
+                    float[] array = new float[2];
+                    array[0] = (float)command.Parameters["@conteoHrsCorrectivo"].Value;
+                    array[1] = (float)command.Parameters["@conteoHrsPreventivo"].Value;
+                    return array;
+                }
+            }
+        }
+        public DataTable ObtenerCorrectivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT *FROM registro_mantenimiento_correctivo rc " +
+                        "INNER JOIN maquinaria m " +
+                        "ON rc.idMaquina=m.idMaquina " +
+                        "INNER JOIN trabajadores t " +
+                        "ON rc.idTrabajador=t.idTrabajador " +
+                        "WHERE m.idArea=@idArea AND rc.fecha BETWEEN @fechaInicio AND @fechaFin";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    command.Parameters.AddWithValue("@idArea", idArea);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
         #endregion
         #endregion
         #region Listado Trabajadores Correctivos
@@ -407,7 +482,7 @@ namespace DataAccess
                 }
             }
         }
-        public void AgregarListado(int idActividadCorrectiva, int idTrabajador, string descripcion, int horasTrabajadas)
+        public void AgregarListado(int idActividadCorrectiva, int idTrabajador, string descripcion, double horasTrabajadas)
         {
             using (var connection = GetConnection())
             {

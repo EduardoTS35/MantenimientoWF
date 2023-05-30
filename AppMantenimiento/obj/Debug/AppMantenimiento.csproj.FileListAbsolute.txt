@@ -79,12 +79,11 @@ C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMante
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCatalogoActividades.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmChildCatalogoActividades.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCatalogoMaquinaria.resources
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.Shell.Interop.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.Shell.Interop.8.0.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.OLE.Interop.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.MSXML.dll
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmLogin.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Common.dll
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Common.pdb
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteKevlar1.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporte.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteInfo.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteTrabajadores.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll

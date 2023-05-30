@@ -20,7 +20,7 @@ namespace Domain.Models
             DataTable table = userDao.MostrarListado();
             return table;
         }
-        public void AgregarListado(int idActividadCorrectiva, int idTrabajador, string descripcion, int horasTrabajadas)
+        public void AgregarListado(int idActividadCorrectiva, int idTrabajador, string descripcion, double horasTrabajadas)
         {
             userDao.AgregarListado(idActividadCorrectiva, idTrabajador, descripcion, horasTrabajadas);
         }

@@ -57,5 +57,11 @@ namespace AppMantenimiento
         {
             openChildForm(new FrmTablas());
         }
+
+        private void reporteGeneralToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmReporteInfo frm= new FrmReporteInfo();
+            frm.ShowDialog();
+        }
     }
 }

@@ -231,7 +231,12 @@ namespace AppMantenimiento
                         registro.IdMaquina = (int)dtgActividades.Rows[e.RowIndex].Cells["IdMaquina"].Value;
                         registro.IdTrabajador = (int)dtgActividades.Rows[e.RowIndex].Cells["IdTrabajador"].Value;
                         registro.FechaProgramada = Convert.ToDateTime(dtgActividades.Rows[e.RowIndex].Cells["FechaProgramada"].Value);
-                        registro.FechaRealizacion = fecha.Date;
+
+                        if (chcFechaSeleccionada.Checked)
+                            registro.FechaRealizacion = dtpFechaRealizacion.Value;
+                        else
+                            registro.FechaRealizacion = fecha.Date;
+
                         registro.Notas = txtNotas.Text;
                         registro.IdTrabajadorSupervisor = trabajador.IdTrabajador;
                         registro.EditarRegistro(registro.IdOrden, registro.IdActividad, registro.IdMaquina, registro.IdTrabajador,
@@ -245,7 +250,12 @@ namespace AppMantenimiento
                         actividad.Descripcion = dtgActividades.Rows[e.RowIndex].Cells["descripcion"].Value.ToString();
                         actividad.Tiempo = Convert.ToDouble(dtgActividades.Rows[e.RowIndex].Cells["tiempo"].Value);
                         actividad.Periodo = (int)dtgActividades.Rows[e.RowIndex].Cells["periodo"].Value;
-                        actividad.FechaProgramada = fecha.AddDays(actividad.Periodo);
+
+                        if (chcFechaSeleccionada.Checked)
+                            actividad.FechaProgramada = dtpFechaRealizacion.Value.AddDays(actividad.Periodo);
+                        else
+                            actividad.FechaProgramada = fecha.AddDays(actividad.Periodo);
+
                         actividad.Asignada = 0;
                         actividad.EditarActividad(actividad.IdArea, actividad.IdMaquina, actividad.NombreActividad,
                             actividad.RecursoHumano, actividad.Descripcion, actividad.Tiempo, actividad.Periodo,
@@ -267,7 +277,12 @@ namespace AppMantenimiento
                     registro.IdMaquina = (int)dtgActividades.Rows[e.RowIndex].Cells["IdMaquina"].Value;
                     registro.IdTrabajador = (int)dtgActividades.Rows[e.RowIndex].Cells["IdTrabajador"].Value;
                     registro.FechaProgramada = Convert.ToDateTime(dtgActividades.Rows[e.RowIndex].Cells["FechaProgramada"].Value);
-                    registro.FechaRealizacion = fecha.Date;
+                    
+                    if (chcFechaSeleccionada.Checked)
+                        registro.FechaRealizacion = dtpFechaRealizacion.Value;
+                    else
+                        registro.FechaRealizacion = fecha.Date;
+
                     registro.Notas = txtNotas.Text;
                     registro.IdTrabajadorSupervisor = trabajador.IdTrabajador;
                     registro.EditarRegistro(registro.IdOrden, registro.IdActividad, registro.IdMaquina, registro.IdTrabajador,
@@ -281,7 +296,13 @@ namespace AppMantenimiento
                     actividad.Descripcion = dtgActividades.Rows[e.RowIndex].Cells["descripcion"].Value.ToString();
                     actividad.Tiempo = Convert.ToDouble(dtgActividades.Rows[e.RowIndex].Cells["tiempo"].Value);
                     actividad.Periodo = (int)dtgActividades.Rows[e.RowIndex].Cells["periodo"].Value;
-                    actividad.FechaProgramada = fecha.AddDays(actividad.Periodo);
+
+                    if (chcFechaSeleccionada.Checked)
+                        actividad.FechaProgramada = dtpFechaRealizacion.Value.AddDays(actividad.Periodo);
+                    else
+                        actividad.FechaProgramada = fecha.AddDays(actividad.Periodo);
+
+
                     actividad.Asignada = 0;
                     actividad.EditarActividad(actividad.IdArea, actividad.IdMaquina, actividad.NombreActividad,
                         actividad.RecursoHumano, actividad.Descripcion, actividad.Tiempo, actividad.Periodo,
@@ -302,27 +323,35 @@ namespace AppMantenimiento
 
         private void dtpA_ValueChanged(object sender, EventArgs e)
         {
-            if (fechaDe)
+            DialogResult dialogResult = MessageBox.Show("¿Deseas usar el filtro de fechas en conjunto con trabajador?", "Pregunta", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult==DialogResult.Yes)
             {
-                if (filtroTrabajador)
+                try
                 {
-                    try
-                    {
-                        this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "' and idTrabajador="+cmbTrabajadores.SelectedValue+"";
-                    }
-                    catch (Exception) { }
+                    this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "' and idTrabajador=" + cmbTrabajadores.SelectedValue + "";
                 }
-                else
+                catch (Exception) { }
+            }
+            else
+            {
+                try
                 {
-                    try
-                    {
-                        this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "'";
-                    }
-                    catch (Exception) { }
-                }              
+                    mifiltroRegistro.RowFilter = null;
+                    filtroTrabajador = false;
+                    this.mifiltroRegistro.RowFilter = "fechaProgramada >= '" + dtpDe.Value.ToString() + "' and fechaProgramada<='" + dtpA.Value.ToString() + "'";
+                }
+                catch (Exception) { }
             }
         }
 
-
+        private void chcFechaSeleccionada_CheckedChanged(object sender, EventArgs e)
+        {
+            if(chcFechaSeleccionada.Checked)
+            {
+                dtpFechaRealizacion.Enabled = true;
+            }
+            else
+                dtpFechaRealizacion.Enabled=false;
+        }
     }
 }

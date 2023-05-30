@@ -1,11 +1,7 @@
 ﻿using Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -14,7 +10,7 @@ namespace AppMantenimiento
 {
     public partial class FrmTablas : Form
     {
-        Actividad actividad= new Actividad();
+        Actividad actividad = new Actividad();
         RegistroActividad registro = new RegistroActividad();
         RegistroCorrectivo correctivo = new RegistroCorrectivo();
         //DataSet Actividades
@@ -27,7 +23,7 @@ namespace AppMantenimiento
         DataSet resultadosCorrectivo = new DataSet();
         DataView filtroCorrectivo;
         //Fechas
-        string fechaDelDia= DateTime.Now.ToString("yyyy-MM-dd");
+        string fechaDelDia = DateTime.Now.ToString("yyyy-MM-dd");
         DateTime primerDiaMes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         DateTime ultimoDiaMes;
 
@@ -45,12 +41,12 @@ namespace AppMantenimiento
         }
         private async Task MostrarResultados()
         {
-            lblNumPD.Text= await MostrarPreventivosDiarios();
-            lblNumPR.Text= await MostrarPreventivosRealizados();
-            lblNumCR.Text = await MostrarCorrectivosRealizados();
+            //lblNumPD.Text = await MostrarPreventivosDiarios();
+            //lblNumPR.Text = await MostrarPreventivosRealizados();
+            //lblNumCR.Text = await MostrarCorrectivosRealizados();
         }
 
-        private async Task <string> MostrarPreventivosDiarios()
+        private async Task<string> MostrarPreventivosDiarios()
         {
             string numPreventivo;
             resultadosActividades.Tables.Clear();
@@ -72,7 +68,7 @@ namespace AppMantenimiento
             this.filtroRegistro = ((DataTable)resultadosRegistro.Tables[0]).DefaultView;
             try
             {
-                this.filtroRegistro.RowFilter = "fechaRealizacion = '" + fechaDelDia + "'";
+                this.filtroRegistro.RowFilter = "fechaRealizacion >= '" + fechaDelDia + "'";
             }
             catch (Exception) { }
             numPreventivosRealizados = Convert.ToString(filtroRegistro.Count);
@@ -83,10 +79,10 @@ namespace AppMantenimiento
             string numCorrectivosRealizados;
             resultadosCorrectivo.Tables.Clear();
             resultadosCorrectivo.Tables.Add(await correctivo.MostrarCorrectivoAsync());
-            this.filtroCorrectivo = ((DataTable)resultadosCorrectivo.Tables[0]).DefaultView;
+            this.filtroCorrectivo = resultadosCorrectivo.Tables[0].DefaultView;
             try
             {
-                this.filtroCorrectivo.RowFilter = "fecha = '" + fechaDelDia + "'";
+                this.filtroCorrectivo.RowFilter = "fecha >= '" + fechaDelDia + "'";
             }
             catch (Exception) { }
             numCorrectivosRealizados = Convert.ToString(filtroCorrectivo.Count);
@@ -99,16 +95,14 @@ namespace AppMantenimiento
 
             // Creamos una nueva serie de datos para el chart
             Series serieDatos = new Series();
+            serieDatos.Name = "Trabajadores";
             serieDatos.ChartType = SeriesChartType.Bar;
 
             // Añadimos los datos a la serie
             foreach (DataRow fila in tabla.Rows)
             {
                 string nombre = fila["nombre"].ToString();
-                int total = Convert.ToInt32(fila["totalActividades"]);
-                int cumplimiento = Convert.ToInt32(fila["actividadesRealizadas"]);
-                int porcentaje = (cumplimiento * 100) / total;
-
+                int porcentaje = Convert.ToInt32(fila["PorcentajeCumplimiento"]);
                 DataPoint punto = new DataPoint();
                 punto.AxisLabel = nombre;
                 punto.YValues = new double[] { porcentaje };
@@ -183,14 +177,14 @@ namespace AppMantenimiento
             DataPoint dataPoint2 = new DataPoint();
             dataPoint2.AxisLabel = "Preventivo";
             dataPoint2.YValues = new double[1] { datos[1] };
-            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {dataPoint2.YValues[0]} ({dataPoint2.YValues[0] / (double)datos.Sum():P0})";
+            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {dataPoint2.YValues[0]} ({Math.Round(dataPoint2.YValues[0] / (double)datos.Sum(), 1):P0})";
             series.Points.Add(dataPoint2);
             chrPreventivoVsCorrectivo.Series.Add(series);
             chrPreventivoVsCorrectivo.Titles.Clear();
             chrPreventivoVsCorrectivo.Titles.Add("Horas trabajadas");
-            chrPreventivoVsCorrectivo.Series[0].Label = "#VALX";
 
-           
+
+
         }
         private void MostrarDatosMaquinaria(DataTable tabla)
         {

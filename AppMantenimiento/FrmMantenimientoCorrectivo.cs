@@ -164,7 +164,7 @@ namespace AppMantenimiento
 
         private void bttGuardarListado_Click(object sender, EventArgs e)
         {
-            listado.AgregarListado(correctivo.Id, (int)cmbListadoTrabajadores.SelectedValue, txtDescListado.Text, (int)nmrHorasTrabajadas.Value);
+            listado.AgregarListado(correctivo.Id, (int)cmbListadoTrabajadores.SelectedValue, txtDescListado.Text, (double)nmrHorasTrabajadas.Value);
             MessageBox.Show("Trabajador asignado correctamente.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
             bttCerrarListado.Enabled = true;
         }

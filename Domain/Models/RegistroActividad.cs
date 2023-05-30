@@ -61,6 +61,12 @@ namespace Domain.Models
             DataTable table = userDao.RegistroPreventivoDashboard(inicio, fin);
             return table;
         }
+        public DataTable ObtenerPreventivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea);
+            return table;
+        }
         #endregion
         #endregion
     }
