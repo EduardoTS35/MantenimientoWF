@@ -30,10 +30,13 @@ namespace AppMantenimiento
                 new string[] { "Angel", "Gomez" },
                 new string[] { "Isidro", "Jordan" },
             };
-        public FrmReporteKevlar1(DateTime fechaInicio, DateTime fechaFin, string notas, int idArea)
+        public FrmReporteKevlar1(DateTime fechaInicio, DateTime fechaFin, string notas, int[] idArea)
         {
             InitializeComponent();
-            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea));
+            if (idArea.Length>1)
+                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin));
+            else
+                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin,idArea));
             MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
             MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
             MostrarPreventivoArea(actividad.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea));

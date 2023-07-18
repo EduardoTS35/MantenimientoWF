@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>13</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -101,11 +101,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmAlmacenRefacciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAlmacenRefacciones.Designer.cs">
+      <DependentUpon>FrmAlmacenRefacciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmCatalogoMaquinaria.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmCatalogoMaquinaria.Designer.cs">
       <DependentUpon>FrmCatalogoMaquinaria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCatalogoMaquinas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCatalogoMaquinas.Designer.cs">
+      <DependentUpon>FrmCatalogoMaquinas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCatalogoRefacciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCatalogoRefacciones.Designer.cs">
+      <DependentUpon>FrmCatalogoRefacciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmChilCatalogoRefacciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmChilCatalogoRefacciones.Designer.cs">
+      <DependentUpon>FrmChilCatalogoRefacciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmChildAlmRefEntradaSalida.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmChildAlmRefEntradaSalida.Designer.cs">
+      <DependentUpon>FrmChildAlmRefEntradaSalida.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmChildCatalogoActividades.cs">
       <SubType>Form</SubType>
@@ -125,6 +155,12 @@
     <Compile Include="FrmCatalogoActividades.Designer.cs">
       <DependentUpon>FrmCatalogoActividades.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmCreadorConsulta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCreadorConsulta.Designer.cs">
+      <DependentUpon>FrmCreadorConsulta.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +178,12 @@
     </Compile>
     <Compile Include="FrmReporteInfo.Designer.cs">
       <DependentUpon>FrmReporteInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmReporteInfoFecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReporteInfoFecha.Designer.cs">
+      <DependentUpon>FrmReporteInfoFecha.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmReporteKevlar1.cs">
       <SubType>Form</SubType>
@@ -188,6 +230,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <EmbeddedResource Include="FrmAlmacenRefacciones.resx">
+      <DependentUpon>FrmAlmacenRefacciones.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAsignacionActividad.resx">
       <DependentUpon>FrmAsignacionActividad.cs</DependentUpon>
     </EmbeddedResource>
@@ -197,8 +242,23 @@
     <EmbeddedResource Include="FrmCatalogoMaquinaria.resx">
       <DependentUpon>FrmCatalogoMaquinaria.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmCatalogoMaquinas.resx">
+      <DependentUpon>FrmCatalogoMaquinas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCatalogoRefacciones.resx">
+      <DependentUpon>FrmCatalogoRefacciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmChilCatalogoRefacciones.resx">
+      <DependentUpon>FrmChilCatalogoRefacciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmChildAlmRefEntradaSalida.resx">
+      <DependentUpon>FrmChildAlmRefEntradaSalida.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmChildCatalogoActividades.resx">
       <DependentUpon>FrmChildCatalogoActividades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCreadorConsulta.resx">
+      <DependentUpon>FrmCreadorConsulta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
@@ -208,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmReporteInfo.resx">
       <DependentUpon>FrmReporteInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReporteInfoFecha.resx">
+      <DependentUpon>FrmReporteInfoFecha.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmReporteKevlar1.resx">
       <DependentUpon>FrmReporteKevlar1.cs</DependentUpon>

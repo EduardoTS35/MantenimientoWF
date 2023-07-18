@@ -30,9 +30,19 @@ namespace Domain.Models
             DataTable table = await Task.FromResult(userDao.MostrarMaquinasArea(id));
             return table;
         }
-        public void AgregarMaquina()
+        public DataTable MostrarMaquinaria()
         {
-            
+            _ = new DataTable();
+            DataTable table = userDao.MostrarMaquinas();
+            return table;
+        }
+        public void AgregarMaquina(int idArea, string descripcion, string modelo, int fabricacion, string marca)
+        {
+            userDao.AgregarMaquina(idArea, descripcion, modelo, fabricacion, marca);
+        }
+        public void EliminarMaquina(int idMaquina)
+        {
+            userDao.EliminarMaquina(idMaquina);
         }
         #endregion
     }

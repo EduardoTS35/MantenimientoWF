@@ -15,7 +15,7 @@ namespace AppMantenimiento
     public partial class FrmReporte : Form
     {
         private Form activeForm = null;
-        public FrmReporte(DateTime fechaInicio, DateTime fechaFin,int idArea, string descArea)
+        public FrmReporte(DateTime fechaInicio, DateTime fechaFin,int[] idArea, string descArea)
         {
             InitializeComponent();
             lblTitulo.Text = "Análisis del mantenimiento área: " + descArea;

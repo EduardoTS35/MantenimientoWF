@@ -1,8 +1,9 @@
 ﻿using Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -10,233 +11,327 @@ namespace AppMantenimiento
 {
     public partial class FrmTablas : Form
     {
-        Actividad actividad = new Actividad();
         RegistroActividad registro = new RegistroActividad();
         RegistroCorrectivo correctivo = new RegistroCorrectivo();
         //DataSet Actividades
-        DataSet resultadosActividades = new DataSet();
-        DataView filtroActidivades;
-        //DataSet Registro Actividades
-        DataSet resultadosRegistro = new DataSet();
-        DataView filtroRegistro;
-        //DataSet Correctivos
-        DataSet resultadosCorrectivo = new DataSet();
-        DataView filtroCorrectivo;
+
         //Fechas
         string fechaDelDia = DateTime.Now.ToString("yyyy-MM-dd");
         DateTime primerDiaMes = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         DateTime ultimoDiaMes;
+        List<string[]> mecanicos = new List<string[]>
+            {
+                new string[] { "Isaac", "Cuatecatl" },
+                new string[] { "Filemon", "Fuentes" },
+                new string[] { "Manuel", "Romero" },
+                new string[] { "David", "Gonzales" },
+                new string[] { "Victor", "Merino" },
+                new string[] { "Ricardo", "Lopez" },
+                new string[] { "Nicolas", "Castillo" }
+                // Agrega más nombres de mecánicos si es necesario
+            };
+
+        List<string[]> electricos = new List<string[]>
+            {
+                new string[] { "Angel", "Gomez" },
+                new string[] { "Isidro", "Jordan" },
+            };
+        int[] areas = { 1, 2, 3, 4 };
 
         public FrmTablas()
         {
             InitializeComponent();
             tmrResultados.Start();
             ultimoDiaMes = primerDiaMes.AddMonths(1).AddDays(-1);
-            _ = MostrarResultados();
-            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(primerDiaMes, ultimoDiaMes));
-            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(primerDiaMes, ultimoDiaMes));
             MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
-            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(primerDiaMes, ultimoDiaMes));
-            MostrarDatosMaquinaria(correctivo.TiempoParoMaquinaDashboard(primerDiaMes, ultimoDiaMes));
-        }
-        private async Task MostrarResultados()
-        {
-            //lblNumPD.Text = await MostrarPreventivosDiarios();
-            //lblNumPR.Text = await MostrarPreventivosRealizados();
-            //lblNumCR.Text = await MostrarCorrectivosRealizados();
+            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
         }
 
-        private async Task<string> MostrarPreventivosDiarios()
-        {
-            string numPreventivo;
-            resultadosActividades.Tables.Clear();
-            resultadosActividades.Tables.Add(await actividad.MostrarActividadesAsync());
-            this.filtroActidivades = ((DataTable)resultadosActividades.Tables[0]).DefaultView;
-            try
-            {
-                this.filtroActidivades.RowFilter = "fechaProgramada = '" + fechaDelDia + "'";
-            }
-            catch (Exception) { }
-            numPreventivo = Convert.ToString(filtroActidivades.Count);
-            return numPreventivo;
-        }
-        private async Task<string> MostrarPreventivosRealizados()
-        {
-            string numPreventivosRealizados;
-            resultadosRegistro.Tables.Clear();
-            resultadosRegistro.Tables.Add(await registro.MostrarRegistroAsync());
-            this.filtroRegistro = ((DataTable)resultadosRegistro.Tables[0]).DefaultView;
-            try
-            {
-                this.filtroRegistro.RowFilter = "fechaRealizacion >= '" + fechaDelDia + "'";
-            }
-            catch (Exception) { }
-            numPreventivosRealizados = Convert.ToString(filtroRegistro.Count);
-            return numPreventivosRealizados;
-        }
-        private async Task<string> MostrarCorrectivosRealizados()
-        {
-            string numCorrectivosRealizados;
-            resultadosCorrectivo.Tables.Clear();
-            resultadosCorrectivo.Tables.Add(await correctivo.MostrarCorrectivoAsync());
-            this.filtroCorrectivo = resultadosCorrectivo.Tables[0].DefaultView;
-            try
-            {
-                this.filtroCorrectivo.RowFilter = "fecha >= '" + fechaDelDia + "'";
-            }
-            catch (Exception) { }
-            numCorrectivosRealizados = Convert.ToString(filtroCorrectivo.Count);
-            return numCorrectivosRealizados;
-        }
-        private void MostrarDatosTrabajadores(DataTable tabla)
-        {
-            // Limpiamos los datos previamente agregados al chart
-            chrTrabajadores.Series.Clear();
-
-            // Creamos una nueva serie de datos para el chart
-            Series serieDatos = new Series();
-            serieDatos.Name = "Trabajadores";
-            serieDatos.ChartType = SeriesChartType.Bar;
-
-            // Añadimos los datos a la serie
-            foreach (DataRow fila in tabla.Rows)
-            {
-                string nombre = fila["nombre"].ToString();
-                int porcentaje = Convert.ToInt32(fila["PorcentajeCumplimiento"]);
-                DataPoint punto = new DataPoint();
-                punto.AxisLabel = nombre;
-                punto.YValues = new double[] { porcentaje };
-                serieDatos.Points.Add(punto);
-            }
-
-            // Agregamos la serie al chart
-            chrTrabajadores.Series.Add(serieDatos);
-
-            // Configuramos el chart
-            chrTrabajadores.Titles.Clear();
-            chrTrabajadores.Titles.Add("Porcentaje de cumplimiento");
-            chrTrabajadores.ChartAreas[0].AxisX.Interval = 1;
-            chrTrabajadores.ChartAreas[0].AxisY.Minimum = 0;
-            chrTrabajadores.ChartAreas[0].AxisY.Maximum = 100;
-            chrTrabajadores.ChartAreas[0].AxisY.Interval = 10;
-        }
-
-        private void MostrarPreventivoMensual(DataTable dt)
-        {
-            chrPreventivoMensual.Series.Clear();
-            chrPreventivoMensual.Titles.Clear();
-            chrPreventivoMensual.Titles.Add("Actividades preventivas por mes");
-
-            Series series = new Series();
-            series.Name = "Actividades preventivas";
-            series.ChartType = SeriesChartType.StackedBar;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                int conteo = Convert.ToInt32(row["conteo"]);
-                DateTime fecha = Convert.ToDateTime(row["fecha"]);
-                series.Points.AddXY(fecha.ToString("yyyy-MM-dd"), conteo);
-            }
-
-            chrPreventivoMensual.Series.Add(series);
-            chrPreventivoMensual.ChartAreas[0].AxisX.Interval = 1;
-            chrPreventivoMensual.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
-        }
-        private void MostrarCorrectivoMensual(DataTable dt)
-        {
-            chrCorrectivoMensual.Series.Clear();
-            chrCorrectivoMensual.Titles.Clear();
-            chrCorrectivoMensual.Titles.Add("Actividades correctivas por mes");
-
-            Series series = new Series();
-            series.Name = "Correctivos";
-            series.ChartType = SeriesChartType.StackedBar;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                int conteo = Convert.ToInt32(row["conteo"]);
-                DateTime fecha = Convert.ToDateTime(row["fecha"]);
-                series.Points.AddXY(fecha.ToString("yyyy-MM-dd"), conteo);
-            }
-
-            chrCorrectivoMensual.Series.Add(series);
-            chrCorrectivoMensual.ChartAreas[0].AxisX.Interval = 1;
-            chrCorrectivoMensual.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
-        }
         private void MostrarPreventivoVsCorrectivo(float[] datos)
         {
-
-            chrPreventivoVsCorrectivo.Series.Clear();
+            chrCorrectivoVsPreventivo.Series.Clear();
             Series series = new Series();
             series.ChartType = SeriesChartType.Doughnut;
+
             DataPoint dataPoint = new DataPoint();
             dataPoint.AxisLabel = "Correctivo";
             dataPoint.YValues = new double[1] { datos[0] };
-            dataPoint.LegendText = $"{dataPoint.AxisLabel}: {dataPoint.YValues[0]} ({dataPoint.YValues[0] / (double)datos.Sum():P0})";
+            double total = datos[0] + datos[1];
+            double porcentajeCorrectivo = datos[0] / total;
+            dataPoint.LegendText = $"{dataPoint.AxisLabel}: {Math.Round(datos[0], 1)} ({porcentajeCorrectivo:P0})";
             series.Points.Add(dataPoint);
+
             DataPoint dataPoint2 = new DataPoint();
             dataPoint2.AxisLabel = "Preventivo";
             dataPoint2.YValues = new double[1] { datos[1] };
-            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {dataPoint2.YValues[0]} ({Math.Round(dataPoint2.YValues[0] / (double)datos.Sum(), 1):P0})";
+            double porcentajePreventivo = datos[1] / total;
+            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {Math.Round(datos[1], 1)} ({porcentajePreventivo:P0})";
             series.Points.Add(dataPoint2);
-            chrPreventivoVsCorrectivo.Series.Add(series);
-            chrPreventivoVsCorrectivo.Titles.Clear();
-            chrPreventivoVsCorrectivo.Titles.Add("Horas trabajadas");
 
-
-
+            chrCorrectivoVsPreventivo.Series.Add(series);
+            chrCorrectivoVsPreventivo.Titles.Clear();
+            chrCorrectivoVsPreventivo.Titles.Add("Horas trabajadas");
         }
-        private void MostrarDatosMaquinaria(DataTable tabla)
+        private void MostrarPreventivoArea(DataTable table)
         {
-            chrTiempoParo.Series.Clear();
+            double porcentajeElectrico = GetPorcentajeMantenimientoPreventivo(table, electricos);
+            double porcentajeMecanico = GetPorcentajeMantenimientoPreventivo(table, mecanicos);
+
+            // Agregar los porcentajes al gráfico
+            chrMantoAreaP.Series.Clear();
+            Series series = chrMantoAreaP.Series.Add("Porcentaje Mantenimiento Preventivo");
+            series.ChartType = SeriesChartType.Doughnut;
+
+            DataPoint dataPointElectrico = series.Points.Add(porcentajeElectrico);
+            dataPointElectrico.AxisLabel = "Eléctrico";
+            dataPointElectrico.LegendText = $"{dataPointElectrico.AxisLabel}: {dataPointElectrico.YValues[0]:F2}%";
+
+            DataPoint dataPointMecanico = series.Points.Add(porcentajeMecanico);
+            dataPointMecanico.AxisLabel = "Mecánico";
+            dataPointMecanico.LegendText = $"{dataPointMecanico.AxisLabel}: {dataPointMecanico.YValues[0]:F2}%";
+
+            // Personalizar el gráfico
+            chrMantoAreaP.ChartAreas[0].AxisY.Minimum = 0;
+            chrMantoAreaP.ChartAreas[0].AxisY.Maximum = 100;
+            chrMantoAreaP.ChartAreas[0].AxisY.Interval = 10;
+            chrMantoAreaP.ChartAreas[0].AxisY.Title = "Porcentaje";
+            chrMantoAreaP.ChartAreas[0].AxisX.Title = "Área";
+            chrMantoAreaP.Titles.Clear();
+            chrMantoAreaP.Titles.Add("Mantenimiento Preventivo por Área");
+        }
+        private double GetPorcentajeMantenimientoPreventivo(DataTable dataTable, List<string[]> trabajadores)
+        {
+            int totalActividades = dataTable.Rows.Count;
+            int actividadesMantenimiento = 0;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                string nombre = row["nombre"].ToString();
+                string apellido = row["apellido"].ToString();
+
+                if (trabajadores.Any(t => t[0] == nombre && t[1] == apellido))
+                {
+                    actividadesMantenimiento++;
+                }
+            }
+
+            double porcentaje = (double)actividadesMantenimiento / totalActividades * 100;
+            return porcentaje;
+        }
+        private List<string> GetDescripcionesMaquina(DataTable dataTable)
+        {
+            List<string> descripcionesMaquina = new List<string>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                string descripcion = row[11].ToString();
+
+                if (!string.IsNullOrEmpty(descripcion) && !descripcionesMaquina.Contains(descripcion))
+                {
+                    descripcionesMaquina.Add(descripcion);
+                }
+            }
+
+            return descripcionesMaquina;
+        }
+        private void MostrarMantoSistemaP(DataTable table)
+        {
+            List<string> descripcionesMaquina = GetDescripcionesMaquina(table);
+
+            // Calcular el porcentaje de mantenimiento preventivo por descripción de máquina
+            Dictionary<string, double> porcentajes = GetPorcentajesMantenimientoPreventivo(table, descripcionesMaquina);
+
+            // Agregar los porcentajes al gráfico
+            chrMantoSistemaP.Series.Clear();
+            Series series = chrMantoSistemaP.Series.Add("Porcentaje Mantenimiento");
+            series.ChartType = SeriesChartType.Doughnut;
+
+            // Personalizar la paleta de colores
+            string[] colores = {
+                "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF",
+                "#FF9F40", "#5A7A9C", "#9BC53D", "#FF6B6B", "#6C757D",
+                "#A4C639", "#00587A", "#FFC300", "#FF5733", "#8B78E6",
+                "#34B1BF", "#FFCB2B", "#B84B9E", "#2A6049", "#A363D4"
+            };
+            int colorIndex = 0;
+
+            foreach (var kvp in porcentajes)
+            {
+                DataPoint dataPoint = series.Points.Add(kvp.Value);
+                dataPoint.AxisLabel = kvp.Key;
+                dataPoint.Color = ColorTranslator.FromHtml(colores[colorIndex]);
+                dataPoint.LegendText = $"{dataPoint.AxisLabel}: {dataPoint.YValues[0]:F1}%";
+
+                colorIndex++;
+                if (colorIndex >= colores.Length)
+                {
+                    colorIndex = 0;
+                }
+            }
+
+            // Personalizar el gráfico
+            chrMantoSistemaP.ChartAreas[0].AxisY.Minimum = 0;
+            chrMantoSistemaP.ChartAreas[0].AxisY.Maximum = 100;
+            chrMantoSistemaP.ChartAreas[0].AxisY.Interval = 10;
+            chrMantoSistemaP.ChartAreas[0].AxisY.Title = "Porcentaje";
+            chrMantoSistemaP.ChartAreas[0].AxisX.Title = "Descripción de Máquina";
+            chrMantoSistemaP.ChartAreas[0].AxisX.Interval = 1;
+
+            // Ocultar etiquetas dentro de la gráfica
+            chrMantoSistemaP.Series[0]["PieLabelStyle"] = "Disabled";
+
+            chrMantoSistemaP.Titles.Clear();
+            chrMantoSistemaP.Titles.Add("Mantenimiento Preventivo por Sistema");
+        }
+        private Dictionary<string, double> GetPorcentajesMantenimientoPreventivo(DataTable dataTable, List<string> descripcionesMaquina)
+        {
+            Dictionary<string, double> porcentajes = new Dictionary<string, double>();
+
+            foreach (string descripcion in descripcionesMaquina)
+            {
+                int totalActividades = dataTable.Rows.Count;
+                int actividadesMantenimiento = 0;
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string descripcionMaquina = row[11].ToString();
+
+                    if (descripcionMaquina == descripcion)
+                    {
+                        actividadesMantenimiento++;
+                    }
+                }
+
+                double porcentaje = (double)actividadesMantenimiento / totalActividades * 100;
+                porcentajes.Add(descripcion, porcentaje);
+            }
+
+            return porcentajes;
+        }
+        private void MostrarCorrectivoArea(DataTable table)
+        {
+            double porcentajeElectrico = GetPorcentajeMantenimientoCorrectivo(table, electricos);
+            double porcentajeMecanico = GetPorcentajeMantenimientoCorrectivo(table, mecanicos);
+
+            // Agregar los porcentajes al gráfico
+            chrMantoAreaC.Series.Clear();
+            Series series = chrMantoAreaC.Series.Add("Porcentaje Mantenimiento Correctivo");
+            series.ChartType = SeriesChartType.Doughnut;
+
+            // Personalizar la paleta de colores
+            series.Palette = ChartColorPalette.BrightPastel;
+
+            DataPoint dpElectrico = series.Points.Add(porcentajeElectrico);
+            dpElectrico.AxisLabel = "Eléctrico";
+            dpElectrico.LegendText = $"{dpElectrico.AxisLabel}: {dpElectrico.YValues[0]:F2}%";
+
+            DataPoint dpMecanico = series.Points.Add(porcentajeMecanico);
+            dpMecanico.AxisLabel = "Mecánico";
+            dpMecanico.LegendText = $"{dpMecanico.AxisLabel}: {dpMecanico.YValues[0]:F2}%";
+
+            // Personalizar el gráfico
+            chrMantoAreaC.ChartAreas[0].AxisY.Minimum = 0;
+            chrMantoAreaC.ChartAreas[0].AxisY.Maximum = 100;
+            chrMantoAreaC.ChartAreas[0].AxisY.Interval = 10;
+            chrMantoAreaC.ChartAreas[0].AxisY.Title = "Porcentaje";
+            chrMantoAreaC.ChartAreas[0].AxisX.Title = "Área";
+            chrMantoAreaC.Titles.Clear();
+            chrMantoAreaC.Titles.Add("Mantenimiento Correctivo por Área");
+        }
+
+        private double GetPorcentajeMantenimientoCorrectivo(DataTable dataTable, List<string[]> trabajadores)
+        {
+            int totalActividades = dataTable.Rows.Count;
+            int actividadesMantenimiento = 0;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                string nombre = row["nombre"].ToString();
+                string apellido = row["apellido"].ToString();
+
+                if (trabajadores.Any(t => t[0] == nombre && t[1] == apellido))
+                {
+                    actividadesMantenimiento++;
+                }
+            }
+
+            double porcentaje = (double)actividadesMantenimiento / totalActividades * 100;
+            return porcentaje;
+        }
+        private void MostrarPorcentajePorDescripcionMaquina(DataTable table)
+        {
+            Dictionary<string, int> porcentajePorDescripcion = new Dictionary<string, int>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                string descripcionMaquina = row[8].ToString();
+
+                if (porcentajePorDescripcion.ContainsKey(descripcionMaquina))
+                {
+                    porcentajePorDescripcion[descripcionMaquina]++;
+                }
+                else
+                {
+                    porcentajePorDescripcion.Add(descripcionMaquina, 1);
+                }
+            }
+
+            int totalRegistros = table.Rows.Count;
+
+            chrMantoSistemaC.Series.Clear();
             Series series = new Series();
             series.ChartType = SeriesChartType.Doughnut;
-            series["PieLabelStyle"] = "Inside";
-            series["PieLineColor"] = "Black";
-            foreach (DataRow row in tabla.Rows)
+
+            foreach (KeyValuePair<string, int> kvp in porcentajePorDescripcion)
             {
-                string text = row["descripcion"].ToString();
-                double num = Convert.ToDouble(row["tiempoParo"]);
+                string descripcionMaquina = kvp.Key;
+                int cantidad = kvp.Value;
+                float porcentaje = (cantidad / (float)totalRegistros) * 100;
+
                 DataPoint dataPoint = new DataPoint();
-                dataPoint.Label = text + ": " + Convert.ToString(num);
-                dataPoint.YValues = new double[1] { num };
-                dataPoint.CustomProperties = "PieLabelStyle=Disabled";
+                dataPoint.AxisLabel = descripcionMaquina;
+                dataPoint.YValues = new double[1] { cantidad };
+                dataPoint.LegendText = $"{dataPoint.AxisLabel}: {dataPoint.YValues[0]}";
+                dataPoint.LegendText += $" ({porcentaje:F1}%)";
                 series.Points.Add(dataPoint);
             }
-            chrTiempoParo.Series.Add(series);
-            chrTiempoParo.Titles.Clear();
-            chrTiempoParo.Titles.Add("Tiempo de paro por maquinaria");
-            chrTiempoParo.ChartAreas[0].Area3DStyle.Enable3D = true;
-            chrTiempoParo.ChartAreas[0].AxisX.Enabled = AxisEnabled.False;
-            chrTiempoParo.ChartAreas[0].AxisY.Enabled = AxisEnabled.False;
-            chrTiempoParo.Legends.Add(new Legend("Maquinas"));
-            chrTiempoParo.Legends[0].Docking = Docking.Right;
-            chrTiempoParo.Legends[0].CustomItems.Clear();
+
+            chrMantoSistemaC.Series.Add(series);
+            chrMantoSistemaC.Titles.Clear();
+            chrMantoSistemaC.Titles.Add("Mantenimiento Correctivo por Sistema");
+            chrMantoSistemaC.Series[0]["PieLabelStyle"] = "Disabled";
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(primerDiaMes, ultimoDiaMes));
-            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(primerDiaMes, ultimoDiaMes));
+
             MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
-            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(primerDiaMes, ultimoDiaMes));
-            MostrarDatosMaquinaria(correctivo.TiempoParoMaquinaDashboard(primerDiaMes, ultimoDiaMes));
+            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
-            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
             MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
-            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            MostrarPreventivoMensual(registro.RegistroPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
-            MostrarCorrectivoMensual(correctivo.RegistroCorrectivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
             MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
-            MostrarDatosTrabajadores(registro.MostrarActividadesRealizadas(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
+
         }
     }
 }

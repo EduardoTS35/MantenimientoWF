@@ -63,5 +63,32 @@ namespace AppMantenimiento
             FrmReporteInfo frm= new FrmReporteInfo();
             frm.ShowDialog();
         }
+
+        private void consultaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmCreadorConsulta frm = new FrmCreadorConsulta();
+            frm.ShowDialog();
+        }
+
+        private void reporteTrabajadoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmReporteInfoFecha frm = new FrmReporteInfoFecha();
+            frm.ShowDialog();
+        }
+
+        private void almacénToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmAlmacenRefacciones());
+        }
+
+        private void catálogoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmCatalogoRefacciones());
+        }
+
+        private void catálogoDeMaquinariaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmCatalogoMaquinaria());
+        }
     }
 }

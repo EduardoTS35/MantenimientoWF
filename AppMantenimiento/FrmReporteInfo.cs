@@ -17,6 +17,7 @@ namespace AppMantenimiento
         bool areaSeleccionada = false;
         bool dtpDeSeleccionado;
         bool dtpASeleccionado;
+        int[] areas = { 1, 2, 3, 4 };
         
         public FrmReporteInfo()
         {
@@ -32,12 +33,14 @@ namespace AppMantenimiento
 
         private void bttAceptar_Click(object sender, EventArgs e)
         {
-            if (areaSeleccionada & dtpDeSeleccionado & dtpASeleccionado)
+            if (areaSeleccionada && dtpDeSeleccionado && dtpASeleccionado)
             {
-                FrmReporte frm= new FrmReporte(dtpDe.Value,dtpA.Value,(int)cmbArea.SelectedValue,cmbArea.Text);
+                int[] selectedAreas = new int[] { (int)cmbArea.SelectedValue };
+                FrmReporte frm = new FrmReporte(dtpDe.Value, dtpA.Value, selectedAreas, cmbArea.Text);
                 frm.Show();
                 this.Close();
             }
+
             else if (areaSeleccionada==false )
                 MessageBox.Show("Por favor selecciona un area", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             else if (dtpDeSeleccionado==false)
@@ -60,6 +63,16 @@ namespace AppMantenimiento
         private void dtpA_ValueChanged(object sender, EventArgs e)
         {
             dtpASeleccionado = true;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (areaSeleccionada && dtpDeSeleccionado)
+            {
+                FrmReporte frm = new FrmReporte(dtpDe.Value, dtpA.Value, areas, cmbArea.Text);
+                frm.Show();
+                this.Close();
+            }
         }
     }
 }

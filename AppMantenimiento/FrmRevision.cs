@@ -85,46 +85,49 @@ namespace AppMantenimiento
             // Agregar la columna al control DataGridView
             dtgActividades.Columns.Add(buttonColumn);
         }
+        private int currentPage = 0; // Variable para realizar el seguimiento de la página actual
+
         private void PrintDataGridView()
         {
             PrintDocument doc = new PrintDocument();
             doc.DefaultPageSettings.Landscape = true;
             doc.PrinterSettings.PrinterName = "Microsoft Print to PDF";
 
-            PrintPreviewDialog ppd = new PrintPreviewDialog { Document = doc };
-            ((Form)ppd).WindowState = FormWindowState.Maximized;
-
             doc.PrintPage += delegate (object ev, PrintPageEventArgs ep)
             {
                 const int DGV_ALTO = 35;
                 int left = ep.MarginBounds.Left, top = ep.MarginBounds.Top;
 
-                // Imprime las columnas mostradas en el DataGridView
-                foreach (DataGridViewColumn col in dtgActividades.Columns)
+                // Imprimir las columnas mostradas en el DataGridView en la primera página
+                if (currentPage == 0)
                 {
-                    if (col.Visible & col.Index != 14)
+                    foreach (DataGridViewColumn col in dtgActividades.Columns)
                     {
-                        string text = col.HeaderText;
-                        int textWidth = (int)ep.Graphics.MeasureString(text, new Font("Segoe UI", 16, FontStyle.Bold)).Width;
-                        col.Width = Math.Max(col.Width, textWidth + 20);
+                        if (col.Visible && col.Index != 14)
+                        {
+                            string text = col.HeaderText;
+                            int textWidth = (int)ep.Graphics.MeasureString(text, new Font("Segoe UI", 16, FontStyle.Bold)).Width;
+                            col.Width = Math.Max(col.Width, textWidth + 20);
 
-                        ep.Graphics.DrawString(text, new Font("Segoe UI", 16, FontStyle.Bold), Brushes.DeepSkyBlue, left, top);
-                        left += col.Width;
+                            ep.Graphics.DrawString(text, new Font("Segoe UI", 16, FontStyle.Bold), Brushes.DeepSkyBlue, left, top);
+                            left += col.Width;
 
-                        if (col.Index < dtgActividades.ColumnCount - 1)
-                            ep.Graphics.DrawLine(Pens.Gray, left - 5, top, left - 5, top + 43 + (dtgActividades.RowCount - 1) * DGV_ALTO);
+                            if (col.Index < dtgActividades.ColumnCount - 1)
+                                ep.Graphics.DrawLine(Pens.Gray, left - 5, top, left - 5, top + 43 + (dtgActividades.RowCount - 1) * DGV_ALTO);
+                        }
                     }
+
+                    left = ep.MarginBounds.Left;
+                    ep.Graphics.FillRectangle(Brushes.Black, left, top + 40, ep.MarginBounds.Right - left, 3);
+                    top += 43;
                 }
 
-                left = ep.MarginBounds.Left;
-                ep.Graphics.FillRectangle(Brushes.Black, left, top + 40, ep.MarginBounds.Right - left, 3);
-                top += 43;
-
-                // Imprime las filas del DataGridView
-                foreach (DataGridViewRow row in dtgActividades.Rows)
+                // Imprimir las filas del DataGridView en la página actual
+                while (currentPage < dtgActividades.RowCount - 1)
                 {
-                    if (row.Index == dtgActividades.RowCount - 1) break;
+                    DataGridViewRow row = dtgActividades.Rows[currentPage];
                     left = ep.MarginBounds.Left;
+
                     foreach (DataGridViewCell cell in row.Cells)
                     {
                         if (cell.Visible)
@@ -144,12 +147,26 @@ namespace AppMantenimiento
                             left += cell.OwningColumn.Width;
                         }
                     }
+
                     top += DGV_ALTO;
                     ep.Graphics.DrawLine(Pens.Gray, ep.MarginBounds.Left, top, ep.MarginBounds.Right, top);
+
+                    currentPage++;
+
+                    // Verificar si se necesita otra página para imprimir más filas
+                    if (top + DGV_ALTO > ep.MarginBounds.Bottom)
+                    {
+                        ep.HasMorePages = true;
+                        break;
+                    }
                 }
             };
-            ppd.ShowDialog();
+
+            doc.Print();
         }
+
+
+
 
 
         private async Task MostrarAreaAsync()
@@ -169,6 +186,11 @@ namespace AppMantenimiento
             cmbTrabajadores.DataSource = await trabajador.MostrarTrabajadores();
             cmbTrabajadores.DisplayMember = "nombre";
             cmbTrabajadores.ValueMember = "idTrabajador";
+        }
+
+        private void ReasignarActividad(int idActividad,int idMaquina, int idTrabajador, DateTime fechaProgramada,DateTime fechaRealizacion, string notas, int idTrabajadorSupervisor)
+        {
+            registro.AgregarRegistro(registro.IdOrden, idActividad, idMaquina, idTrabajador,fechaProgramada, fechaRealizacion, notas, idTrabajadorSupervisor);
         }
 
         private void cmbFiltroArea_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -238,7 +260,7 @@ namespace AppMantenimiento
                             registro.FechaRealizacion = fecha.Date;
 
                         registro.Notas = txtNotas.Text;
-                        registro.IdTrabajadorSupervisor = trabajador.IdTrabajador;
+                        registro.IdTrabajadorSupervisor = 1;
                         registro.EditarRegistro(registro.IdOrden, registro.IdActividad, registro.IdMaquina, registro.IdTrabajador,
                             registro.FechaProgramada, (DateTime)registro.FechaRealizacion, registro.Notas, (int)registro.IdTrabajadorSupervisor);
                         //Actividades 
@@ -256,10 +278,12 @@ namespace AppMantenimiento
                         else
                             actividad.FechaProgramada = fecha.AddDays(actividad.Periodo);
 
-                        actividad.Asignada = 0;
+                        actividad.Asignada = 1;
                         actividad.EditarActividad(actividad.IdArea, actividad.IdMaquina, actividad.NombreActividad,
                             actividad.RecursoHumano, actividad.Descripcion, actividad.Tiempo, actividad.Periodo,
                             actividad.FechaProgramada, actividad.Asignada);
+                        ReasignarActividad(actividad.IdActividad,actividad.IdMaquina,registro.IdTrabajador,actividad.FechaProgramada,
+                            Convert.ToDateTime("2000-01-01"),"",0);
                         MessageBox.Show("Actividad revisada exitosamente.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         DataGridViewRow row = dtgActividades.Rows[e.RowIndex];
 

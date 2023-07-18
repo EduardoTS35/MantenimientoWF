@@ -62,16 +62,23 @@ namespace Domain.Models
             DataTable table = userDao.TiempoParoMaquinaDashboard(fechaInicio, fechaFin);
             return table;
         }
-        public float[] CorrectivoVsPreventivoArea(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        public float[] CorrectivoVsPreventivoArea(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             _ = new float[2];
             float[] array = userDao.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea);
             return array;
         }
-        public DataTable ObtenerCorrectivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        public DataTable ObtenerCorrectivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             _ = new DataTable();
             DataTable table = userDao.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea);
+            return table;
+        }
+
+        public DataTable CorrectivosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.ObtenerCorrectivosFecha(fechaInicio, fechaFin);
             return table;
         }
         #endregion

@@ -36,6 +36,7 @@
             this.dtpDe = new System.Windows.Forms.DateTimePicker();
             this.dtpA = new System.Windows.Forms.DateTimePicker();
             this.bttAceptar = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblArea
@@ -100,11 +101,23 @@
             this.bttAceptar.UseVisualStyleBackColor = true;
             this.bttAceptar.Click += new System.EventHandler(this.bttAceptar_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(42, 187);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(69, 20);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Todos";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // FrmReporteInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(375, 280);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.bttAceptar);
             this.Controls.Add(this.dtpA);
             this.Controls.Add(this.dtpDe);
@@ -132,5 +145,6 @@
         private System.Windows.Forms.DateTimePicker dtpDe;
         private System.Windows.Forms.DateTimePicker dtpA;
         private System.Windows.Forms.Button bttAceptar;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

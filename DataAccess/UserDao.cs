@@ -1,5 +1,6 @@
 ﻿using Common;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,6 +8,7 @@ namespace DataAccess
 {
     public class UserDao : ConnectionToSql
     {
+        private const CommandType text = CommandType.Text;
         #region Actividades
         public DataTable MostrarActividades()
         {
@@ -227,7 +229,7 @@ namespace DataAccess
                 }
             }
         }
-        public DataTable ObtenerPreventivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+        public DataTable ObtenerPreventivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             SqlDataReader leer;
             DataTable table = new DataTable();
@@ -237,16 +239,45 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT *FROM registro_actividades a " +
-                        "INNER JOIN maquinaria m " +
-                        "ON a.idMaquina=m.idMaquina " +
-                        "INNER JOIN trabajadores t " +
-                        "ON a.idTrabajador=t.idTrabajador " +
-                        "WHERE m.idArea=@idArea AND a.fechaRealizacion BETWEEN @fechaInicio AND @fechaFin " +
-                        "AND a.fechaProgramada BETWEEN DATEFROMPARTS(YEAR(@fechaInicio), MONTH(@fechaInicio), 1) AND EOMONTH(@fechaInicio)" ;
+
+                    // Convertir el arreglo de idArea en una cadena separada por comas
+                    string idAreaString = string.Join(",", idArea);
+
+                    command.CommandText = "SELECT * FROM registro_actividades a " +
+                        "INNER JOIN maquinaria m ON a.idMaquina = m.idMaquina " +
+                        "INNER JOIN trabajadores t ON a.idTrabajador = t.idTrabajador " +
+                        "WHERE m.idArea IN (" + idAreaString + ") " +
+                        "AND a.fechaRealizacion BETWEEN @fechaInicio AND @fechaFin " +
+                        "AND a.fechaProgramada BETWEEN DATEFROMPARTS(YEAR(@fechaInicio), MONTH(@fechaInicio), 1) AND EOMONTH(@fechaInicio)";
+
                     command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                     command.Parameters.AddWithValue("@fechaFin", fechaFin);
-                    command.Parameters.AddWithValue("@idArea", idArea);
+
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+
+                    connection.Close();
+
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarRegistrosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+
+                    command.CommandText = "SELECT * FROM registro_actividades WHERE fechaProgramada BETWEEN @fechaInicio AND @fechaFin " +
+                        "AND fechaRealizacion BETWEEN @fechaInicio AND @fechaFin";
+
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -372,18 +403,26 @@ namespace DataAccess
                 connection.Open();
                 using (var command = new SqlCommand())
                 {
-                    command.Connection = connection;
-                    command.CommandText = "PreventivoVsCorrectivoDashboard";
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
-                    command.Parameters.Add("@conteoHrsCorrectivo", SqlDbType.Real).Direction = ParameterDirection.Output;
-                    command.Parameters.Add("@conteoHrsPreventivo", SqlDbType.Real).Direction = ParameterDirection.Output;
-                    command.ExecuteNonQuery();
-                    float[] array = new float[2];
-                    array[0] = (float)command.Parameters["@conteoHrsCorrectivo"].Value;
-                    array[1] = (float)command.Parameters["@conteoHrsPreventivo"].Value;
-                    return array;
+                    try
+                    {
+                        command.Connection = connection;
+                        command.CommandText = "PreventivoVsCorrectivoDashboard";
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                        command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                        command.Parameters.Add("@conteoHrsCorrectivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                        command.Parameters.Add("@conteoHrsPreventivo", SqlDbType.Real).Direction = ParameterDirection.Output;
+                        command.ExecuteNonQuery();
+                        float[] array = new float[2];
+                        array[0] = (float)command.Parameters["@conteoHrsCorrectivo"].Value;
+                        array[1] = (float)command.Parameters["@conteoHrsPreventivo"].Value;
+                        return array;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                    
                 }
             }        
         }
@@ -408,7 +447,7 @@ namespace DataAccess
                 }
             }
         }
-        public float[] CorrectivoVsPreventivoArea(DateTime fechaInicio, DateTime fechaFin,int idArea)
+        public float[] CorrectivoVsPreventivoArea(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             using (var connection = GetConnection())
             {
@@ -420,7 +459,11 @@ namespace DataAccess
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                     command.Parameters.AddWithValue("@fechaFin", fechaFin);
-                    command.Parameters.AddWithValue("@idArea", idArea);
+
+                    // Convert int[] to delimited string
+                    string idAreaString = string.Join(",", idArea);
+                    command.Parameters.AddWithValue("@idAreaString", idAreaString);
+
                     command.Parameters.Add("@conteoHrsCorrectivo", SqlDbType.Real).Direction = ParameterDirection.Output;
                     command.Parameters.Add("@conteoHrsPreventivo", SqlDbType.Real).Direction = ParameterDirection.Output;
                     command.ExecuteNonQuery();
@@ -431,7 +474,8 @@ namespace DataAccess
                 }
             }
         }
-        public DataTable ObtenerCorrectivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int idArea)
+
+        public DataTable ObtenerCorrectivoAreaFecha(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             SqlDataReader leer;
             DataTable table = new DataTable();
@@ -441,15 +485,30 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT *FROM registro_mantenimiento_correctivo rc " +
-                        "INNER JOIN maquinaria m " +
-                        "ON rc.idMaquina=m.idMaquina " +
-                        "INNER JOIN trabajadores t " +
-                        "ON rc.idTrabajador=t.idTrabajador " +
-                        "WHERE m.idArea=@idArea AND rc.fecha BETWEEN @fechaInicio AND @fechaFin";
+                    // Construir la consulta SQL dinámicamente
+                    string query = "SELECT * FROM registro_mantenimiento_correctivo rc " +
+                        "INNER JOIN maquinaria m ON rc.idMaquina = m.idMaquina " +
+                        "INNER JOIN trabajadores t ON rc.idTrabajador = t.idTrabajador " +
+                        "WHERE m.idArea IN ({0}) AND rc.fecha BETWEEN @fechaInicio AND @fechaFin";
+
+                    // Crear los parámetros para cada valor de idArea
+                    List<string> parameterNames = new List<string>();
+                    for (int i = 0; i < idArea.Length; i++)
+                    {
+                        string parameterName = "@idArea" + i;
+                        command.Parameters.AddWithValue(parameterName, idArea[i]);
+                        parameterNames.Add(parameterName);
+                    }
+
+                    // Combinar los parámetros en una cadena separada por comas
+                    string parameterString = string.Join(", ", parameterNames);
+
+                    // Reemplazar el marcador de posición en la consulta SQL con los parámetros
+                    string formattedQuery = string.Format(query, parameterString);
+
+                    command.CommandText = formattedQuery;
                     command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                     command.Parameters.AddWithValue("@fechaFin", fechaFin);
-                    command.Parameters.AddWithValue("@idArea", idArea);
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -457,6 +516,29 @@ namespace DataAccess
                 }
             }
         }
+
+        public DataTable ObtenerCorrectivosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+
+                    command.CommandText = "SELECT * FROM registro_mantenimiento_correctivo WHERE fecha BETWEEN @fechaInicio AND @fechaFin";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+
         #endregion
         #endregion
         #region Listado Trabajadores Correctivos
@@ -599,6 +681,45 @@ namespace DataAccess
                 }
             }
         }
+        public void AgregarMaquina(int idArea, string descripcion, string modelo, int fabricacion, string marca)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "INSERT INTO maquinaria VALUES (@idArea, @descripcion, @modelo, @fabricacion, @marca)";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@idArea", idArea);
+                    command.Parameters.AddWithValue("@descripcion", descripcion);
+                    command.Parameters.AddWithValue("@modelo", modelo);
+                    command.Parameters.AddWithValue("@fabricacion", fabricacion);
+                    command.Parameters.AddWithValue("@marca", marca);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EliminarMaquina(int idMaquina)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM maquinaria WHERE idMaquina=@idMaquina";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@idMaquina", idMaquina);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+
         #endregion
         #region Trabajadores
         public DataTable MostrarTrabajadores()
