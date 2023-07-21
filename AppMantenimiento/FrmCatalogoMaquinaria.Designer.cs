@@ -30,7 +30,6 @@
         {
             this.cmbArea = new System.Windows.Forms.ComboBox();
             this.txtMarca = new System.Windows.Forms.TextBox();
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.txtModelo = new System.Windows.Forms.TextBox();
             this.mskFabricacion = new System.Windows.Forms.MaskedTextBox();
             this.lblMaquina = new System.Windows.Forms.Label();
@@ -40,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.bttGuardar = new System.Windows.Forms.Button();
             this.dtgMaquinaria = new System.Windows.Forms.DataGridView();
+            this.txtDescripcion = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgMaquinaria)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,15 +61,6 @@
             this.txtMarca.TabIndex = 7;
             this.txtMarca.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // txtDescripcion
-            // 
-            this.txtDescripcion.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.txtDescripcion.Location = new System.Drawing.Point(688, 31);
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(177, 22);
-            this.txtDescripcion.TabIndex = 6;
-            this.txtDescripcion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // txtModelo
             // 
             this.txtModelo.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -88,7 +79,7 @@
             this.mskFabricacion.Size = new System.Drawing.Size(177, 22);
             this.mskFabricacion.TabIndex = 11;
             this.mskFabricacion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.mskFabricacion.ValidatingType = typeof(System.DateTime);
+            this.mskFabricacion.ValidatingType = typeof(int);
             // 
             // lblMaquina
             // 
@@ -159,10 +150,21 @@
             this.dtgMaquinaria.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgMaquinaria.Location = new System.Drawing.Point(12, 12);
             this.dtgMaquinaria.Name = "dtgMaquinaria";
-            this.dtgMaquinaria.RowHeadersWidth = 51;
+            this.dtgMaquinaria.ReadOnly = true;
+            this.dtgMaquinaria.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dtgMaquinaria.RowTemplate.Height = 24;
             this.dtgMaquinaria.Size = new System.Drawing.Size(556, 595);
             this.dtgMaquinaria.TabIndex = 1;
+            this.dtgMaquinaria.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgMaquinaria_CellContentClick);
+            // 
+            // txtDescripcion
+            // 
+            this.txtDescripcion.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.txtDescripcion.Location = new System.Drawing.Point(688, 31);
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new System.Drawing.Size(177, 22);
+            this.txtDescripcion.TabIndex = 6;
+            this.txtDescripcion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // FrmCatalogoMaquinaria
             // 
@@ -195,7 +197,6 @@
         #endregion
         private System.Windows.Forms.ComboBox cmbArea;
         private System.Windows.Forms.TextBox txtMarca;
-        private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.TextBox txtModelo;
         private System.Windows.Forms.MaskedTextBox mskFabricacion;
         private System.Windows.Forms.Label lblMaquina;
@@ -205,5 +206,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button bttGuardar;
         private System.Windows.Forms.DataGridView dtgMaquinaria;
+        private System.Windows.Forms.TextBox txtDescripcion;
     }
 }

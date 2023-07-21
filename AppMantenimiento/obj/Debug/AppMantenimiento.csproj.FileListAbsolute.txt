@@ -97,7 +97,6 @@ C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsof
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.8.0.dll
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\Microsoft.MSXML.dll
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.csproj.SuggestedBindingRedirects.cache
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteMovimientos.resources
-C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\EnvDTE.xml
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCatalogoMaquinas.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\bin\Debug\EnvDTE.xml
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.csproj.SuggestedBindingRedirects.cache

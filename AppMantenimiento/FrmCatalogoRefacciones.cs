@@ -16,11 +16,16 @@ namespace AppMantenimiento
         {
             InitializeComponent();
         }
-
-        private void bttAgregar_Click(object sender, EventArgs e)
+        #region Métodos
+        private void MostrarRefacciones()
         {
-            FrmChilCatalogoRefacciones frm = new FrmChilCatalogoRefacciones();
-            frm.Show(); 
+
         }
+        private void MostrarGrupos()
+        {
+
+        }
+
+        #endregion
     }
 }

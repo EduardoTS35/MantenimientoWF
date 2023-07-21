@@ -110,7 +110,7 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT *FROM registro_actividades re INNER JOIN actividades a ON re.idActividad = a.idActividad INNER JOIN maquinaria m ON re.idMaquina = m.idMaquina INNER JOIN area ar ON m.idArea = ar.idArea WHERE fechaRealizacion='2000-01-01' OR idTrabajadorSupervisor=0 AND a.fechaProgramada<=GETDATE()";
+                    command.CommandText = "SELECT *FROM registro_actividades re INNER JOIN actividades a ON re.idActividad = a.idActividad INNER JOIN maquinaria m ON re.idMaquina = m.idMaquina INNER JOIN area ar ON m.idArea = ar.idArea WHERE fechaRealizacion='2000-01-01' AND a.fechaProgramada<=GETDATE()";
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -654,7 +654,8 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT * FROM maquinaria";
+                    command.CommandText = "SELECT * FROM maquinaria m " +
+                        "INNER JOIN area a ON m.idArea=a.idArea";
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -711,7 +712,7 @@ namespace DataAccess
                 {
                     command.Connection = connection;
                     command.CommandText = "DELETE FROM maquinaria WHERE idMaquina=@idMaquina";
-                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@idMaquina", idMaquina);
                     command.ExecuteNonQuery();
 
@@ -778,6 +779,184 @@ namespace DataAccess
             return false;
         }
 
+        #endregion
+        #region Refacciones
+        public DataTable MostrarRefacciones()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT * FROM refacciones";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarGruposRefacciones()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT grupo FROM refacciones GROUP BY grupo";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public void AgregarRefaccion(string grupo, string descripcion,string unidad, string maquina, int precio, string proveedor)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "INSERT INTO refacciones VALUES (@grupo, @descripcion, @unidad, @maquina, @precio, @proveedor)";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@grupo", grupo);
+                    command.Parameters.AddWithValue("@descripcion", descripcion);
+                    command.Parameters.AddWithValue("@unidad", unidad);
+                    command.Parameters.AddWithValue("@maquina", maquina);
+                    command.Parameters.AddWithValue("@precio", precio);
+                    command.Parameters.AddWithValue("@proveedor", proveedor);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EditarRefaccion(int idRefaccion, string grupo, string descripcion, string unidad, string maquina, int precio, string proveedor)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE refacciones SET grupo = @grupo, descripcion = @descripcion, unidad = @unidad, maquina = @maquina, precio = @precio, proveedor = @proveedor WHERE idRefaccion = @idRefaccion";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.Parameters.AddWithValue("@grupo", grupo);
+                    command.Parameters.AddWithValue("@descripcion", descripcion);
+                    command.Parameters.AddWithValue("@unidad", unidad);
+                    command.Parameters.AddWithValue("@maquina", maquina);
+                    command.Parameters.AddWithValue("@precio", precio);
+                    command.Parameters.AddWithValue("@proveedor", proveedor);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EliminarRefaccion(int idRefaccion)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM refacciones WHERE idRefaccion=@idRefaccion";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        #endregion
+        #region AlmacenRefacciones
+        public DataTable MostrarAlmacenRefacciones()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT * FROM almacen_refacciones TOP 200";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public void AgregarMovimientoRefaccion(int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "INSERT INTO almacen_refacciones VALUES (@idRefaccion, @idStatus, @fechaMovimiento, @cantidad)";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.Parameters.AddWithValue("@idStatus", idStatus);
+                    command.Parameters.AddWithValue("@cantidad", cantidad);
+                    command.Parameters.AddWithValue("@fechaMovimiento", fechaMovimiento);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EditarMovimientoRefaccion(int id, int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE almacen_refacciones SET idRefaccion = @idRefaccion, idStatus = @idStatus, fechaMovimiento = @fechaMovimiento, cantidad = @cantidad WHERE idSerial = @id";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.Parameters.AddWithValue("@idStatus", idStatus);
+                    command.Parameters.AddWithValue("@cantidad", cantidad);
+                    command.Parameters.AddWithValue("@fechaMovimiento", fechaMovimiento);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EliminarMovimientoRefaccion(int id)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM almacen_refacciones WHERE idSerial=@id";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
         #endregion
     }
 }
