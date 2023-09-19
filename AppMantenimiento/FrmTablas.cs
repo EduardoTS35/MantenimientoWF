@@ -37,21 +37,31 @@ namespace AppMantenimiento
                 new string[] { "Isidro", "Jordan" },
             };
         int[] areas = { 1, 2, 3, 4 };
+        float hrsRealizadasPreventivo;
 
         public FrmTablas()
         {
             InitializeComponent();
             tmrResultados.Start();
             ultimoDiaMes = primerDiaMes.AddMonths(1).AddDays(-1);
-            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
-            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
-            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
-            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
-            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            try
+            {
+                //MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes));
+                //MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+                //MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+                //MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+                //MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            }
+            catch {
+            }
+            
         }
 
         private void MostrarPreventivoVsCorrectivo(float[] datos)
         {
+            chrCorrectivoVsPreventivo.ChartAreas[0].AxisX.Minimum = 0;
+            chrCorrectivoVsPreventivo.ChartAreas[0].AxisY.Maximum = 0;
+
             chrCorrectivoVsPreventivo.Series.Clear();
             Series series = new Series();
             series.ChartType = SeriesChartType.Doughnut;
@@ -75,8 +85,38 @@ namespace AppMantenimiento
             chrCorrectivoVsPreventivo.Titles.Clear();
             chrCorrectivoVsPreventivo.Titles.Add("Horas trabajadas");
         }
+        private void MostrarRealizadoVSProgramado(float[] datos, double programado)
+        {
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisX.Minimum = 0;
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisY.Maximum = 0;
+
+            chrRealizadoVSPlaneado.Series.Clear();
+            Series series = new Series();
+            series.ChartType = SeriesChartType.Doughnut;
+
+            DataPoint dataPoint = new DataPoint();
+            dataPoint.AxisLabel = "Programado";
+            dataPoint.YValues = new double[1] { programado };
+            double total = programado + datos[1];
+            double porcentajeCorrectivo = programado / total;
+            dataPoint.LegendText = $"{dataPoint.AxisLabel}: {Math.Round(programado, 1)} ({porcentajeCorrectivo:P0})";
+            series.Points.Add(dataPoint);
+
+            DataPoint dataPoint2 = new DataPoint();
+            dataPoint2.AxisLabel = "Realizado";
+            dataPoint2.YValues = new double[1] { datos[1] };
+            double porcentajePreventivo = datos[1] / total;
+            dataPoint2.LegendText = $"{dataPoint2.AxisLabel}: {Math.Round(datos[1], 1)} ({porcentajePreventivo:P0})";
+            series.Points.Add(dataPoint2);
+
+            chrRealizadoVSPlaneado.Series.Add(series);
+            chrRealizadoVSPlaneado.Titles.Clear();
+            chrRealizadoVSPlaneado.Titles.Add("Horas trabajadas");
+        }
         private void MostrarPreventivoArea(DataTable table)
         {
+            chrMantoAreaP.ChartAreas[0].AxisX.Minimum = 0;
+            chrMantoAreaP.ChartAreas[0].AxisY.Maximum = 0;
             double porcentajeElectrico = GetPorcentajeMantenimientoPreventivo(table, electricos);
             double porcentajeMecanico = GetPorcentajeMantenimientoPreventivo(table, mecanicos);
 
@@ -139,6 +179,8 @@ namespace AppMantenimiento
         }
         private void MostrarMantoSistemaP(DataTable table)
         {
+            chrMantoSistemaP.ChartAreas[0].AxisX.Minimum = 0;
+            chrMantoSistemaP.ChartAreas[0].AxisY.Maximum = 0;
             List<string> descripcionesMaquina = GetDescripcionesMaquina(table);
 
             // Calcular el porcentaje de mantenimiento preventivo por descripción de máquina
@@ -179,9 +221,9 @@ namespace AppMantenimiento
             chrMantoSistemaP.ChartAreas[0].AxisY.Title = "Porcentaje";
             chrMantoSistemaP.ChartAreas[0].AxisX.Title = "Descripción de Máquina";
             chrMantoSistemaP.ChartAreas[0].AxisX.Interval = 1;
-
-            // Ocultar etiquetas dentro de la gráfica
             chrMantoSistemaP.Series[0]["PieLabelStyle"] = "Disabled";
+            // Ocultar etiquetas dentro de la gráfica
+
 
             chrMantoSistemaP.Titles.Clear();
             chrMantoSistemaP.Titles.Add("Mantenimiento Preventivo por Sistema");
@@ -213,6 +255,8 @@ namespace AppMantenimiento
         }
         private void MostrarCorrectivoArea(DataTable table)
         {
+            chrMantoAreaC.ChartAreas[0].AxisX.Minimum = 0;
+            chrMantoAreaC.ChartAreas[0].AxisY.Maximum = 0;
             double porcentajeElectrico = GetPorcentajeMantenimientoCorrectivo(table, electricos);
             double porcentajeMecanico = GetPorcentajeMantenimientoCorrectivo(table, mecanicos);
 
@@ -263,6 +307,8 @@ namespace AppMantenimiento
         }
         private void MostrarPorcentajePorDescripcionMaquina(DataTable table)
         {
+            chrMantoSistemaC.ChartAreas[0].AxisX.Minimum = 0;
+            chrMantoSistemaC.ChartAreas[0].AxisY.Maximum = 0;
             Dictionary<string, int> porcentajePorDescripcion = new Dictionary<string, int>();
 
             foreach (DataRow row in table.Rows)
@@ -313,6 +359,7 @@ namespace AppMantenimiento
             MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
             MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
             MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(primerDiaMes, ultimoDiaMes, areas));
+            MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(primerDiaMes, ultimoDiaMes), registro.TiempoRegistrosProgramadosFecha(primerDiaMes, ultimoDiaMes));
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
@@ -322,16 +369,7 @@ namespace AppMantenimiento
             MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
             MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
             MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-            MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
-            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
-            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
-            MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
-            MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-7.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
-
+            MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)),registro.TiempoRegistrosProgramadosFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
         }
     }
 }

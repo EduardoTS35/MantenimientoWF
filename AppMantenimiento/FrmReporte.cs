@@ -20,7 +20,7 @@ namespace AppMantenimiento
             InitializeComponent();
             lblTitulo.Text = "Análisis del mantenimiento área: " + descArea;
             lblPeriodo.Text = "De: "+fechaInicio+" a "+fechaFin+"";
-            openChildForm(new FrmReporteKevlar1(fechaInicio,fechaFin,"",idArea));
+            openChildForm(new FrmReporteKevlar1(fechaInicio,fechaFin,idArea));
 
         }       
         private void openChildForm(Form childForm)

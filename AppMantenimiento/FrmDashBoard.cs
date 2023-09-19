@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace AppMantenimiento
 {
     public partial class FrmDashBoard : Form
     {
+        Usuario usuario = new Usuario();
         private Form activeForm = null;
         public FrmDashBoard()
         {
@@ -58,21 +60,9 @@ namespace AppMantenimiento
             openChildForm(new FrmTablas());
         }
 
-        private void reporteGeneralToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FrmReporteInfo frm= new FrmReporteInfo();
-            frm.ShowDialog();
-        }
-
         private void consultaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmCreadorConsulta frm = new FrmCreadorConsulta();
-            frm.ShowDialog();
-        }
-
-        private void reporteTrabajadoresToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FrmReporteInfoFecha frm = new FrmReporteInfoFecha();
             frm.ShowDialog();
         }
 
@@ -89,6 +79,44 @@ namespace AppMantenimiento
         private void catálogoDeMaquinariaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openChildForm(new FrmCatalogoMaquinaria());
+        }
+
+        private void solicitarRefacciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(Usuario.IdRol == 1 || Usuario.IdRol == 4 || Usuario.IdRol == 5)
+            {
+                openChildForm(new FrmSolicitudRefaccionAlmacen());
+            }
+            else
+            {
+                FrmSeleccionRefaccion frm = new FrmSeleccionRefaccion();
+                frm.ShowDialog();
+            }
+            
+        }
+
+        private void reporteGeneralToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmReporteInfo frm = new FrmReporteInfo();
+            frm.ShowDialog();
+        }
+
+        private void reporteTabajadoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmReporteInfoFecha frm = new FrmReporteInfoFecha();
+            frm.ShowDialog();
+        }
+
+        private void autorizarCompraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmAutorizacionCompra());
+        }
+
+        private void reporteCorrectivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Common.Usuario.BoolApp = true;
+            FrmReporteInfoFecha frm = new FrmReporteInfoFecha();
+            frm.ShowDialog();
         }
     }
 }

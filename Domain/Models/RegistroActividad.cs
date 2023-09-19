@@ -73,6 +73,18 @@ namespace Domain.Models
             DataTable table = userDao.MostrarRegistrosFecha(fechaInicio, fechaFin);
             return table;
         }
+
+        public double TiempoRegistrosProgramadosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            double tiempo = userDao.TiempoRegistrosProgramadosFecha(fechaInicio, fechaFin);
+            return tiempo;
+        }
+
+        public double TiempoRegistrosProgramadosArea(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
+        {
+            double tiempo = userDao.TiempoRegistrosProgramadosArea(fechaInicio, fechaFin, idArea);
+            return tiempo;
+        }
         #endregion
         #endregion
     }

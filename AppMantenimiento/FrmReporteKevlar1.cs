@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,19 +31,23 @@ namespace AppMantenimiento
                 new string[] { "Angel", "Gomez" },
                 new string[] { "Isidro", "Jordan" },
             };
-        public FrmReporteKevlar1(DateTime fechaInicio, DateTime fechaFin, string notas, int[] idArea)
+        public FrmReporteKevlar1(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
             InitializeComponent();
-            if (idArea.Length>1)
+            if (idArea.Length > 1)
+            {
                 MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin));
+                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin), actividad.TiempoRegistrosProgramadosFecha(fechaInicio, fechaFin));
+            }
             else
-                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin,idArea));
+            {
+                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea));
+                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea), actividad.TiempoRegistrosProgramadosArea(fechaInicio, fechaFin,idArea));
+            }
             MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
             MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
             MostrarPreventivoArea(actividad.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea));
             MostrarMantoSistemaP(actividad.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea));
-            if (notas != "")
-                txtNotas.Text = "Notas: " + notas;
         }
         private string GenerarLeyenda(double porcentajePreventivo, double porcentajeCorrectivo, double totalHoras)
         {
@@ -325,6 +330,56 @@ namespace AppMantenimiento
 
             txtLeyenda1.Text = GenerarLeyenda(datos[1], datos[0], total);
         }
+        #endregion
+        #region Porcentaje Programado VS Realizado
+        private void MostrarRealizadoVSProgramado(float[] datos, double programado)
+        {
+            chrRealizadoVSPlaneado.Series.Clear();
+
+            Series series = new Series("Programado");
+            Series series2 = new Series("Realizado");
+            series.ChartType = SeriesChartType.Column;
+
+            // Colores personalizados para las barras
+            series.Palette = ChartColorPalette.Pastel;
+
+            // Datos programados
+            DataPoint dataPointProgramado = new DataPoint();
+            dataPointProgramado.AxisLabel = "Programado";
+            dataPointProgramado.YValues = new double[1] { programado };
+            dataPointProgramado.Label = $"{programado:N1}";
+            series.Points.Add(dataPointProgramado);
+
+            // Datos realizados
+            DataPoint dataPointRealizado = new DataPoint();
+            dataPointRealizado.AxisLabel = "Realizado";
+            dataPointRealizado.YValues = new double[1] { datos[1] };
+            dataPointRealizado.Label = $"{datos[1]:N1}";
+            series2.Points.Add(dataPointRealizado);
+
+            chrRealizadoVSPlaneado.Series.Add(series);
+            chrRealizadoVSPlaneado.Series.Add(series2);
+
+            // Títulos y leyendas
+            chrRealizadoVSPlaneado.Titles.Clear();
+            chrRealizadoVSPlaneado.Titles.Add(new Title("Programado VS Realizado", Docking.Top));
+
+            // Agregar leyenda (simbología)
+            Legend legend = new Legend();
+            legend.Font = new Font("Arial", 10);
+            legend.Docking = Docking.Bottom;
+            chrRealizadoVSPlaneado.Legends.Add(legend);
+
+            // Actualizar mínimos y máximos de los ejes
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisX.Minimum = -0.5;
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisX.Maximum = 1.5;
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisY.Maximum = Math.Max(programado, datos[1]) * 1.2;
+
+            // Configuración de las etiquetas de los ejes
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisX.LabelStyle.Font = new Font("Arial", 8, FontStyle.Bold);
+            chrRealizadoVSPlaneado.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Arial", 8, FontStyle.Bold);
+        }
+
         #endregion
     }
 }

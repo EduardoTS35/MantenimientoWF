@@ -69,7 +69,7 @@ namespace AppMantenimiento
         {
             if (areaSeleccionada && dtpDeSeleccionado)
             {
-                FrmReporte frm = new FrmReporte(dtpDe.Value, dtpA.Value, areas, cmbArea.Text);
+                FrmReporte frm = new FrmReporte(dtpDe.Value, dtpA.Value, areas, areas.ToString());
                 frm.Show();
                 this.Close();
             }

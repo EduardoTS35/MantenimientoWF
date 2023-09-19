@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,5 +22,7 @@ namespace Common
         public static string User { get; set; }
 
         public static int IdRol { get; set; }
+
+        public static bool BoolApp { get; set; }
     }
 }

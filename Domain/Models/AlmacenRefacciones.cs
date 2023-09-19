@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    internal class AlmacenRefacciones
+    public class AlmacenRefacciones
     {
         UserDao userDao = new UserDao();
         #region Atributos
@@ -24,13 +24,23 @@ namespace Domain.Models
             DataTable table = await Task.FromResult(userDao.MostrarAlmacenRefacciones());
             return table;
         }
-        public void AgregarMovimientoRefaccion(int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+        public async Task<DataTable> MostrarAlmacenRefacciones(int idStatus)
         {
-            userDao.AgregarMovimientoRefaccion(idRefaccion, idStatus, cantidad, fechaMovimiento);
+            DataTable table = await Task.FromResult(userDao.MostrarAlmacenRefacciones(idStatus));
+            return table;
         }
-        public void EditarMovimientoRefaccion(int id, int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+        public async Task<DataTable> MostrarAlmacenRefaccionesAsync(int idStatus, int revisado)
         {
-            userDao.EditarMovimientoRefaccion(id, idRefaccion, idStatus, cantidad, fechaMovimiento);
+            DataTable table = await Task.FromResult(userDao.MostrarAlmacenRefacciones(idStatus, revisado));
+            return table;
+        }
+        public void AgregarMovimientoRefaccion(int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento, string proveedor, int idSolicitud, string numFactura, double precio, int revision)
+        {
+            userDao.AgregarMovimientoRefaccion(idRefaccion, idStatus, cantidad, fechaMovimiento, proveedor, idSolicitud, numFactura,precio, revision);
+        }
+        public void EditarMovimientoRefaccion(int id, int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento, int revisado)
+        {
+            userDao.EditarMovimientoRefaccion(id, idRefaccion, idStatus, cantidad, fechaMovimiento, revisado);
         }
         public void EliminarMovimientoRefaccion(int id)
         {

@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace DataAccess
 {
     public class UserDao : ConnectionToSql
     {
-        private const CommandType text = CommandType.Text;
         #region Actividades
         public DataTable MostrarActividades()
         {
@@ -110,7 +110,7 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT *FROM registro_actividades re INNER JOIN actividades a ON re.idActividad = a.idActividad INNER JOIN maquinaria m ON re.idMaquina = m.idMaquina INNER JOIN area ar ON m.idArea = ar.idArea WHERE fechaRealizacion='2000-01-01' AND a.fechaProgramada<=GETDATE()";
+                    command.CommandText = "SELECT *FROM registro_actividades re INNER JOIN actividades a ON re.idActividad = a.idActividad INNER JOIN maquinaria m ON re.idMaquina = m.idMaquina INNER JOIN area ar ON m.idArea = ar.idArea WHERE fechaRealizacion='2000-01-01' AND a.fechaProgramada<=GETDATE()+1";
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -284,6 +284,94 @@ namespace DataAccess
                     return table;
                 }
             }
+        }
+        public double TiempoRegistrosProgramadosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            double tiempo = 0;
+            using (SqlConnection sqlConnection = GetConnection())
+            {
+                
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.Connection = sqlConnection;
+                    sqlCommand.CommandText = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin";
+                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    sqlCommand.CommandType = CommandType.Text;
+
+                    using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (sqlDataReader.HasRows)
+                        {
+                            while (sqlDataReader.Read())
+                            {
+                                tiempo = sqlDataReader.GetDouble(0);
+                            }
+                            return tiempo;
+                        }
+                    }
+                }
+            }
+
+            return tiempo;
+        }
+        public double TiempoRegistrosProgramadosArea(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
+        {
+            double tiempo = 0;
+            using (SqlConnection sqlConnection = GetConnection())
+            {
+
+                sqlConnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.Connection = sqlConnection;
+
+                    string query = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad INNER JOIN maquinaria m ON a.idMaquina=m.idMaquina WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin AND a.idArea IN ({0})";
+
+                    // Crear los parámetros para cada valor de idArea
+                    List<string> parameterNames = new List<string>();
+                    for (int i = 0; i < idArea.Length; i++)
+                    {
+                        string parameterName = "@idArea" + i;
+                        sqlCommand.Parameters.AddWithValue(parameterName, idArea[i]);
+                        parameterNames.Add(parameterName);
+                    }
+
+                    // Combinar los parámetros en una cadena separada por comas
+                    string parameterString = string.Join(", ", parameterNames);
+
+                    // Reemplazar el marcador de posición en la consulta SQL con los parámetros
+                    string formattedQuery = string.Format(query, parameterString);
+
+                    sqlCommand.CommandText = formattedQuery;
+                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    sqlCommand.CommandType = CommandType.Text;
+                    try
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            if (sqlDataReader.HasRows)
+                            {
+                                while (sqlDataReader.Read())
+                                {
+                                    tiempo = sqlDataReader.GetDouble(0);
+                                }
+                                return tiempo;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    
+                }
+            }
+
+            return tiempo;
         }
         #endregion
         #endregion
@@ -538,7 +626,27 @@ namespace DataAccess
                 }
             }
         }
+        public DataTable ReporteCorrectivo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
 
+                    command.CommandText = "SELECT rc.idTrabajador,t.nombre, COUNT(*) AS totalActividades, SUM(tiempoParo) AS totalTiempo FROM registro_mantenimiento_correctivo rc INNER JOIN trabajadores t ON rc.idTrabajador = t.idTrabajador WHERE fecha BETWEEN @fechaInicio AND @fechaFin GROUP BY rc.idTrabajador,t.nombre";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
         #endregion
         #endregion
         #region Listado Trabajadores Correctivos
@@ -780,6 +888,26 @@ namespace DataAccess
         }
 
         #endregion
+        #region Proveedores
+        public DataTable MostrarProveedores()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT * FROM proveedores";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        #endregion
         #region Refacciones
         public DataTable MostrarRefacciones()
         {
@@ -792,6 +920,24 @@ namespace DataAccess
                 {
                     command.Connection = connection;
                     command.CommandText = "SELECT * FROM refacciones";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarRefaccionesTop100()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT TOP(100) * FROM refacciones ORDER BY idRefaccion ASC ";
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -817,7 +963,32 @@ namespace DataAccess
                 }
             }
         }
-        public void AgregarRefaccion(string grupo, string descripcion,string unidad, string maquina, int precio, string proveedor)
+        public DataTable StockRefaccion(int idRefaccion)
+        {
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT idRefaccion, SUM(CASE WHEN idStatus = 4 THEN cantidad ELSE -cantidad END) AS stock " +
+                                          "FROM almacen_refacciones " +
+                                          "WHERE idRefaccion = @idRefaccion " +
+                                          "GROUP BY idRefaccion;";
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+
+                    using (SqlDataReader leer = command.ExecuteReader())
+                    {
+                        table.Load(leer);
+                    }
+                }
+            }
+            return table;
+        }
+
+
+        public void AgregarRefaccion(string grupo, string descripcion, string unidad, string maquina, double? precio, string proveedor, int max, int min, string moneda)
         {
             using (var connection = GetConnection())
             {
@@ -825,21 +996,23 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "INSERT INTO refacciones VALUES (@grupo, @descripcion, @unidad, @maquina, @precio, @proveedor)";
+                    command.CommandText = "INSERT INTO refacciones VALUES (@grupo, @descripcion, @unidad, @maquina, @precio, @proveedor, @max, @min, @moneda)";
                     command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@grupo", grupo);
                     command.Parameters.AddWithValue("@descripcion", descripcion);
                     command.Parameters.AddWithValue("@unidad", unidad);
                     command.Parameters.AddWithValue("@maquina", maquina);
-                    command.Parameters.AddWithValue("@precio", precio);
+                    command.Parameters.AddWithValue("@precio", precio.HasValue ? (object)precio : DBNull.Value);
                     command.Parameters.AddWithValue("@proveedor", proveedor);
+                    command.Parameters.AddWithValue("@max", max);
+                    command.Parameters.AddWithValue("@min", min);
+                    command.Parameters.AddWithValue("@moneda", moneda);
                     command.ExecuteNonQuery();
-
                 }
-                connection.Close();
             }
         }
-        public void EditarRefaccion(int idRefaccion, string grupo, string descripcion, string unidad, string maquina, int precio, string proveedor)
+
+        public void EditarRefaccion(int idRefaccion, string grupo, string descripcion, string unidad, string maquina, double? precio, string proveedor, int max, int min, string moneda)
         {
             using (var connection = GetConnection())
             {
@@ -847,21 +1020,23 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "UPDATE refacciones SET grupo = @grupo, descripcion = @descripcion, unidad = @unidad, maquina = @maquina, precio = @precio, proveedor = @proveedor WHERE idRefaccion = @idRefaccion";
+                    command.CommandText = "UPDATE refacciones SET grupo = @grupo, descripcion = @descripcion, unidad = @unidad, maquina = @maquina, precio = @precio, proveedor = @proveedor, max = @max, min = @min, moneda = @moneda WHERE idRefaccion = @idRefaccion";
                     command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
                     command.Parameters.AddWithValue("@grupo", grupo);
                     command.Parameters.AddWithValue("@descripcion", descripcion);
                     command.Parameters.AddWithValue("@unidad", unidad);
                     command.Parameters.AddWithValue("@maquina", maquina);
-                    command.Parameters.AddWithValue("@precio", precio);
+                    command.Parameters.AddWithValue("@precio", precio.HasValue ? (object)precio : DBNull.Value);
                     command.Parameters.AddWithValue("@proveedor", proveedor);
+                    command.Parameters.AddWithValue("@max", max);
+                    command.Parameters.AddWithValue("@min", min);
+                    command.Parameters.AddWithValue("@moneda", moneda);
                     command.ExecuteNonQuery();
-
                 }
-                connection.Close();
             }
         }
+
         public void EliminarRefaccion(int idRefaccion)
         {
             using (var connection = GetConnection())
@@ -871,7 +1046,7 @@ namespace DataAccess
                 {
                     command.Connection = connection;
                     command.CommandText = "DELETE FROM refacciones WHERE idRefaccion=@idRefaccion";
-                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
                     command.ExecuteNonQuery();
 
@@ -879,6 +1054,7 @@ namespace DataAccess
                 connection.Close();
             }
         }
+
         #endregion
         #region AlmacenRefacciones
         public DataTable MostrarAlmacenRefacciones()
@@ -891,7 +1067,7 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT * FROM almacen_refacciones TOP 200";
+                    command.CommandText = "SELECT a.idRefaccion, CAST(r.descripcion AS VARCHAR(MAX)) AS descripcion, SUM(CASE WHEN a.idStatus = 4 THEN cantidad ELSE -cantidad END) AS total_cantidad, grupo FROM almacen_refacciones a INNER JOIN refacciones r ON a.idRefaccion = r.idRefaccion WHERE a.idStatus IN (4, 5) GROUP BY a.idRefaccion, CAST(r.descripcion AS VARCHAR(MAX)), grupo;";
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();
@@ -899,7 +1075,60 @@ namespace DataAccess
                 }
             }
         }
-        public void AgregarMovimientoRefaccion(int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+        public DataTable MostrarAlmacenRefacciones(int idStatus)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                    SELECT a.idSerial,CONVERT (DATE,fechaMovimiento) AS Fecha,a.idRefaccion, r.descripcion, cantidad,p.id AS idProveedor,p.nombre AS proveedor, a.precio, idSolicitud  FROM almacen_refacciones a
+                    INNER JOIN refacciones r
+                    ON a.idRefaccion = r.idRefaccion
+                    INNER JOIN proveedores p
+                    ON a.proveedor = p.id
+                    WHERE idStatus = @idStatus 
+                    ORDER BY fechaMovimiento DESC";
+                    command.Parameters.AddWithValue("@idStatus", idStatus);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarAlmacenRefacciones(int idStatus, int revisado)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                    SELECT a.idSerial,CONVERT (DATE,fechaMovimiento) AS Fecha,a.idRefaccion, r.descripcion, cantidad,p.id AS idProveedor,p.nombre AS proveedor, a.precio, idSolicitud  FROM almacen_refacciones a
+                    INNER JOIN refacciones r
+                    ON a.idRefaccion = r.idRefaccion
+                    INNER JOIN proveedores p
+                    ON a.proveedor = p.id
+                    WHERE idStatus = @idStatus AND revisado = @revisado
+                    ORDER BY fechaMovimiento DESC";
+                    command.Parameters.AddWithValue("@idStatus", idStatus);
+                    command.Parameters.AddWithValue("@revisado", revisado);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public void AgregarMovimientoRefaccion(int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento, string proveedor, int idSolicitud, string numFactura, double precio, int revision)
         {
             using (var connection = GetConnection())
             {
@@ -907,19 +1136,25 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "INSERT INTO almacen_refacciones VALUES (@idRefaccion, @idStatus, @fechaMovimiento, @cantidad)";
+                    command.CommandText = "INSERT INTO almacen_refacciones VALUES (@idRefaccion, @idStatus, @fechaMovimiento, @cantidad,@proveedor,@idSolicitud,@numFactura,@precio, @revision)";
                     command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
                     command.Parameters.AddWithValue("@idStatus", idStatus);
                     command.Parameters.AddWithValue("@cantidad", cantidad);
                     command.Parameters.AddWithValue("@fechaMovimiento", fechaMovimiento);
+                    command.Parameters.AddWithValue("@proveedor", proveedor);
+                    command.Parameters.AddWithValue("@idSolicitud", idSolicitud);
+                    command.Parameters.AddWithValue("@numFactura", numFactura);
+                    command.Parameters.AddWithValue("@precio", precio);
+                    command.Parameters.AddWithValue("@revision", revision);
                     command.ExecuteNonQuery();
 
                 }
                 connection.Close();
             }
         }
-        public void EditarMovimientoRefaccion(int id, int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento)
+
+        public void EditarMovimientoRefaccion(int id, int idRefaccion, int idStatus, int cantidad, DateTime fechaMovimiento, int revisado)
         {
             using (var connection = GetConnection())
             {
@@ -927,13 +1162,14 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "UPDATE almacen_refacciones SET idRefaccion = @idRefaccion, idStatus = @idStatus, fechaMovimiento = @fechaMovimiento, cantidad = @cantidad WHERE idSerial = @id";
+                    command.CommandText = "UPDATE almacen_refacciones SET idRefaccion = @idRefaccion, idStatus = @idStatus, fechaMovimiento = @fechaMovimiento, cantidad = @cantidad, revisado=@revisado WHERE idSerial = @id";
                     command.CommandType = CommandType.Text;
                     command.Parameters.AddWithValue("@id", id);
                     command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
                     command.Parameters.AddWithValue("@idStatus", idStatus);
                     command.Parameters.AddWithValue("@cantidad", cantidad);
                     command.Parameters.AddWithValue("@fechaMovimiento", fechaMovimiento);
+                    command.Parameters.AddWithValue("@revisado", revisado);
                     command.ExecuteNonQuery();
 
                 }
@@ -958,5 +1194,139 @@ namespace DataAccess
             }
         }
         #endregion
+        #region Formato Solicitud de Refacciones
+        public DataTable MostrarSolicitudesAsync()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT * FROM solicitudesRefaccion";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        public DataTable MostrarTop100Solicitudes()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT TOP(100) s.id ,fecha, t.nombre + ' ' + t.apellido AS nombre, s.cantidad, r.idRefaccion as idRefaccion,r.descripcion AS refaccion, m.descripcion AS maquina, descUso, observaciones " +
+                                          "FROM solicitudesRefaccion s " +
+                                          "INNER JOIN refacciones r ON s.idRefaccion = r.idRefaccion " +
+                                          "INNER JOIN maquinaria m ON s.idMaquina = m.idMaquina " +
+                                          "INNER JOIN trabajadores t ON s.idTrabajadorSolicitante = t.idTrabajador " +
+                                          "WHERE s.idTrabajadorAutorizante = 0 " +
+                                          "ORDER BY id DESC";
+
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                }
+
+                connection.Close();
+            }
+
+            return table;
+        }
+
+
+        public void AgregarSolicitud(DateTime fecha, int cantidad, int idRefaccion, int idMaquina, string descUso, int idTrabajadorSolicitante, int idTrabajadorAutorizante, string observaciones)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "INSERT INTO solicitudesRefaccion VALUES (@fecha, @cantidad, @idRefaccion, @idMaquina, @descUso, @idTrabajadorSolicitante, @idTrabajadorAutorizante, @observaciones)";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@fecha", fecha);
+                    command.Parameters.AddWithValue("@cantidad", cantidad);
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.Parameters.AddWithValue("@idMaquina", idMaquina);
+                    command.Parameters.AddWithValue("@descUso", descUso);
+                    command.Parameters.AddWithValue("@idTrabajadorSolicitante", idTrabajadorSolicitante);
+                    command.Parameters.AddWithValue("@idTrabajadorAutorizante", idTrabajadorAutorizante);
+                    command.Parameters.AddWithValue("@observaciones", observaciones);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void EditarSolicitud(int id, DateTime fecha, int cantidad, int idRefaccion, int idMaquina, string descUso, int idTrabajadorSolicitante, int idTrabajadorAutorizante, string observaciones)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE solicitudesRefaccion SET fecha = @fecha, cantidad = @cantidad, idRefaccion = @idRefaccion, idMaquina = @idMaquina, descUso = @descUso, idTrabajadorSolicitante = @idTrabajadorSolicitante, idTrabajadorAutorizante = @idTrabajadorAutorizante, observaciones = @observaciones WHERE id = @id";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@fecha", fecha);
+                    command.Parameters.AddWithValue("@cantidad", cantidad);
+                    command.Parameters.AddWithValue("@idRefaccion", idRefaccion);
+                    command.Parameters.AddWithValue("@idMaquina", idMaquina);
+                    command.Parameters.AddWithValue("@descUso", descUso);
+                    command.Parameters.AddWithValue("@idTrabajadorSolicitante", idTrabajadorSolicitante);
+                    command.Parameters.AddWithValue("@idTrabajadorAutorizante", idTrabajadorAutorizante);
+                    command.Parameters.AddWithValue("@observaciones", observaciones);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AprobarSolicitud(int id, int idSupervisor)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "UPDATE solicitudesRefaccion SET idTrabajadorAutorizante = @idTrabajadorAutorizante WHERE id = @id";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@idTrabajadorAutorizante", idSupervisor);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void EliminarSolicitud(int id)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM solicitudesRefaccion WHERE id=@id";
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        #endregion
+
+
     }
 }

@@ -45,14 +45,20 @@ namespace AppMantenimiento
             //Columnas Visibles
             dtgActividades.Columns[12].HeaderText = "Nombre de Actividad";
             dtgActividades.Columns[12].Visible = true;
+            dtgActividades.Columns[14].HeaderText = "Descripción de Actividad";
+            dtgActividades.Columns[15].Visible = true;
+            dtgActividades.Columns[15].HeaderText = "Tiempo";
+            dtgActividades.Columns[16].Visible = true;
+            dtgActividades.Columns[16].HeaderText = "Periodo";
+            dtgActividades.Columns[14].Visible = true;
             dtgActividades.Columns[26].HeaderText = "Área";
             dtgActividades.Columns[26].Visible = true;
             dtgActividades.Columns[21].HeaderText = "Maquina";
             dtgActividades.Columns[21].Visible = true;
             dtgActividades.Columns[5].HeaderText = "Fecha Programada";
             dtgActividades.Columns[5].Visible = true;
+
             //Columnas a ocultar
-            dtgActividades.Columns[14].Visible = false;
             dtgActividades.Columns[0].Visible = false;
             dtgActividades.Columns[1].Visible = false;
             dtgActividades.Columns[2].Visible = false;
@@ -65,8 +71,6 @@ namespace AppMantenimiento
             dtgActividades.Columns[10].Visible = false;
             dtgActividades.Columns[3].Visible = false;
             dtgActividades.Columns[13].Visible = false;
-            dtgActividades.Columns[15].Visible = false;
-            dtgActividades.Columns[16].Visible = false;
             dtgActividades.Columns[17].Visible = false;
 
             dtgActividades.Columns[18].Visible = false;

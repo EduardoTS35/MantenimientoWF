@@ -81,6 +81,12 @@ namespace Domain.Models
             DataTable table = userDao.ObtenerCorrectivosFecha(fechaInicio, fechaFin);
             return table;
         }
+        public DataTable ReporteCorrectivo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            _ = new DataTable();
+            DataTable table = userDao.ReporteCorrectivo(fechaInicio, fechaFin);
+            return table;
+        }
         #endregion
         #endregion
     }
