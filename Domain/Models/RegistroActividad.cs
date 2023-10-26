@@ -85,7 +85,12 @@ namespace Domain.Models
             double tiempo = userDao.TiempoRegistrosProgramadosArea(fechaInicio, fechaFin, idArea);
             return tiempo;
         }
-        #endregion
-        #endregion
+
+        public void EliminarRegistroDuplicado()
+        {
+            userDao.EliminarRegistroDuplicado();
+        }
+            #endregion
+            #endregion
     }
 }

@@ -10,14 +10,49 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.IO;
+using System.IO.Compression;
+using System.Net;
+using System.Diagnostics;
 
 namespace AppMantenimiento
 {
     public partial class FrmLogin : Form
     {
+        
         public FrmLogin()
         {
             InitializeComponent();
+            WebClient webClient = new WebClient();
+            var client = new WebClient();
+
+            //if (!webClient.DownloadString("https://www.dropbox.com/scl/fi/0vgb2fg4pyqaxc9b6onw0/Update.txt?rlkey=5kwu1omstj2qu5bm34p7grv8z&dl=0").Contains("1.0.0.0"))
+            //{
+            //    if(MessageBox.Show("Nueva versión, desea actualizar el programa","Mensaje", MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        try
+            //        {
+            //            if (File.Exists(@".\MyAppSetup.msi"))
+            //                File.Delete(@".\MyAppSetup.msi");
+            //            client.DownloadFile("https://www.dropbox.com/scl/fi/d9bcaw9l22r6v9q33plws/MyAppSetup.rar?rlkey=nqap4mlpip493htfb8fraj49p&dl=0", @"MyAppSetup.zip");
+            //            string zipApp = @"\MyAppSetup.zip";
+            //            string extractPath = @".\";
+            //            ZipFile.ExtractToDirectory(zipApp, extractPath);
+
+            //            Process process = new Process();
+            //            process.StartInfo.FileName = "msiexec";
+            //            process.StartInfo.Arguments = String.Format("/i MyAppSetup.msi");
+
+            //            this.Close();
+            //            process.Start();
+            //        }
+            //        catch (Exception)
+            //        {
+
+            //            throw;
+            //        }
+            //    }
+            //}
         }
         private void Login()
         {

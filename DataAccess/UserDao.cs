@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 
 namespace DataAccess
@@ -180,6 +181,28 @@ namespace DataAccess
                     command.CommandText = "EliminarRegistroActividad";
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+
+                }
+                connection.Close();
+            }
+        }
+        public void EliminarRegistroDuplicado()
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"WITH REGISTRO_DUPLICADO AS(
+                    SELECT
+                    INDICE = ROW_NUMBER() OVER (PARTITION BY idActividad,fechaProgramada ORDER BY id),
+                    *
+                    FROM registro_actividades
+                )DELETE FROM REGISTRO_DUPLICADO
+                WHERE INDICE > 1;";
+                    command.CommandType = CommandType.Text;
                     command.ExecuteNonQuery();
 
                 }
@@ -1193,6 +1216,67 @@ namespace DataAccess
                 connection.Close();
             }
         }
+        #region DashBoard
+        public DataTable MostrarHistorial(DateTime fechaInicio, DateTime fechaFin, int idStatus)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"SELECT a.idSerial, a.idRefaccion, r.descripcion as nombreRefaccion,
+                    l.descripcion, a.fechaMovimiento, a.cantidad, a.proveedor, a.precio
+                    FROM almacen_refacciones a
+                    INNER JOIN refacciones r
+                    ON a.idRefaccion = r.idRefaccion
+                    INNER JOIN  lista_status l
+                    ON a.idStatus = l.idStatus
+                    WHERE a.fechaMovimiento BETWEEN @fechaInicio AND @fechaFin
+                    AND a.idStatus=@idStatus";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    command.Parameters.AddWithValue("@idStatus", idStatus);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+        #endregion
+        #region Reporte Compras
+        public DataTable MostrarMovimientosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"SELECT 
+                    idSerial,a.idRefaccion,r.descripcion, a.idStatus, a.fechaMovimiento, a.cantidad,
+                    a.proveedor, a.idSolicitud, a.numFactura, a.precio
+                    FROM almacen_refacciones a
+                    INNER JOIN refacciones r
+                    ON a.idRefaccion = r.idRefaccion
+                    WHERE fechaMovimiento
+                    BETWEEN @fechaInicio AND @fechaFin";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
+
+        #endregion
         #endregion
         #region Formato Solicitud de Refacciones
         public DataTable MostrarSolicitudesAsync()
@@ -1323,6 +1407,26 @@ namespace DataAccess
 
                 }
                 connection.Close();
+            }
+        }
+        #endregion
+        #region Listado de Estados
+        public DataTable MostrarListadoEstados()
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"SELECT * FROM lista_status";
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
             }
         }
         #endregion

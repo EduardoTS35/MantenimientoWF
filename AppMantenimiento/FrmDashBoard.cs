@@ -118,5 +118,16 @@ namespace AppMantenimiento
             FrmReporteInfoFecha frm = new FrmReporteInfoFecha();
             frm.ShowDialog();
         }
+
+        private void comprasToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmGenerarReporteRefacciones frm = new FrmGenerarReporteRefacciones(1);
+            frm.ShowDialog();
+        }
+
+        private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmDashBoardAlmacen());
+        }
     }
 }

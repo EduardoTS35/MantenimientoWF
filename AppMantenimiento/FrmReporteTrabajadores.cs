@@ -13,6 +13,7 @@ namespace AppMantenimiento
         RegistroActividad registro = new RegistroActividad();
         public FrmReporteTrabajadores(DateTime fechaInicio, DateTime fechaFin)
         {
+            
             InitializeComponent();
             lblPeriodo.Text += fechaInicio.ToString() + " a " + fechaFin.ToString();
             MostrarDatosAsignacion(registro.MostrarActividadesRealizadas(fechaInicio, fechaFin));

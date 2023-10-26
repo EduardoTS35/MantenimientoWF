@@ -44,6 +44,7 @@
     <Compile Include="Models\Actividad.cs" />
     <Compile Include="Models\AlmacenRefacciones.cs" />
     <Compile Include="Models\Area.cs" />
+    <Compile Include="Models\ListadoEstados.cs" />
     <Compile Include="Models\ListadoTrabajadoresCorrectivo.cs" />
     <Compile Include="Models\Maquina.cs" />
     <Compile Include="Models\Proveedores.cs" />

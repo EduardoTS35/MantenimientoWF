@@ -31,7 +31,7 @@ namespace AppMantenimiento
             await MostrarGruposAsync();
 
             // Configura la tabla de datos
-            ConfigureDataGridView();
+            
         }
 
         private async Task MostrarGruposAsync()
@@ -40,7 +40,7 @@ namespace AppMantenimiento
             cmbGrupo.DisplayMember = "grupo";
         }
 
-        private void ConfigureDataGridView()
+        private async Task ConfigureDataGridView()
         {
             dtgRefacciones.Columns.Clear();
 
@@ -65,6 +65,14 @@ namespace AppMantenimiento
             dtgRefacciones.Columns[6].Visible = false;
             dtgRefacciones.Columns[7].Visible = false;
             dtgRefacciones.Columns[8].Visible = false;
+
+            await LoadRemainingDataAsync();
+        }
+        private async Task LoadRemainingDataAsync()
+        {
+            dtgRefacciones.DataSource = await refacciones.MostrarRefaccionesAsync();
+            // You might want to refresh the DataGridView to update the data displayed
+            dtgRefacciones.Refresh();
         }
 
         private void Filtrado()
@@ -141,6 +149,11 @@ namespace AppMantenimiento
             // Restaurar valores por defecto en los elementos de filtrado
             txtDesc.Text = string.Empty;
             cmbGrupo.SelectedIndex = -1;
+        }
+
+        private void FrmSeleccionRefaccion_Load(object sender, EventArgs e)
+        {
+            _ = ConfigureDataGridView();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -35,6 +37,7 @@ namespace AppMantenimiento
             {
                 await MostrarAreaAsync();
             }).GetAwaiter().GetResult();
+            EliminarRegistroDuplicado();
         }
         private async Task MostrarActividades()
         {
@@ -102,21 +105,34 @@ namespace AppMantenimiento
                 const int DGV_ALTO = 35;
                 int left = ep.MarginBounds.Left, top = ep.MarginBounds.Top;
 
-                // Imprimir las columnas mostradas en el DataGridView en la primera página
+                // Nombres de las columnas a imprimir
+                string[] columnNames = { "descripcion1", "nombreActividad", "descripcion" };
+                int[] columnWidths = { 200, 300, 400 };  // Ancho estimado para cada columna
+
+                // Imprimir las columnas específicas en la primera página
                 if (currentPage == 0)
                 {
-                    foreach (DataGridViewColumn col in dtgActividades.Columns)
+                    for (int i = 0; i < columnNames.Length; i++)
                     {
-                        if (col.Visible && col.Index != 14)
-                        {
-                            string text = col.HeaderText;
-                            int textWidth = (int)ep.Graphics.MeasureString(text, new Font("Segoe UI", 16, FontStyle.Bold)).Width;
-                            col.Width = Math.Max(col.Width, textWidth + 20);
+                        DataGridViewColumn col = dtgActividades.Columns[columnNames[i]];
 
-                            ep.Graphics.DrawString(text, new Font("Segoe UI", 16, FontStyle.Bold), Brushes.DeepSkyBlue, left, top);
+                        if (col != null && col.Visible)
+                        {
+                            col.Width = columnWidths[i];  // Asignar ancho estimado
+
+                            string text = col.HeaderText;
+
+                            // Centrar el texto en la celda
+                            StringFormat format = new StringFormat();
+                            format.Alignment = StringAlignment.Center;
+                            format.LineAlignment = StringAlignment.Center;
+
+                            // Dibujar el texto centrado
+                            ep.Graphics.DrawString(text, new Font("Segoe UI", 16, FontStyle.Bold), Brushes.DeepSkyBlue, new RectangleF(left, top, col.Width, DGV_ALTO), format);
+
                             left += col.Width;
 
-                            if (col.Index < dtgActividades.ColumnCount - 1)
+                            if (i < columnNames.Length - 1)
                                 ep.Graphics.DrawLine(Pens.Gray, left - 5, top, left - 5, top + 43 + (dtgActividades.RowCount - 1) * DGV_ALTO);
                         }
                     }
@@ -126,32 +142,56 @@ namespace AppMantenimiento
                     top += 43;
                 }
 
-                // Imprimir las filas del DataGridView en la página actual
+                // Resto de la lógica para imprimir filas
                 while (currentPage < dtgActividades.RowCount - 1)
                 {
                     DataGridViewRow row = dtgActividades.Rows[currentPage];
                     left = ep.MarginBounds.Left;
 
-                    foreach (DataGridViewCell cell in row.Cells)
+                    for (int i = 0; i < columnNames.Length; i++)
                     {
-                        if (cell.Visible)
+                        DataGridViewCell cell = row.Cells[columnNames[i]];
+
+                        if (cell != null && cell.Visible)
                         {
                             string text = Convert.ToString(cell.Value);
-                            int textWidth = (int)ep.Graphics.MeasureString(text, new Font("Segoe UI", 13)).Width;
-                            if (textWidth > cell.OwningColumn.Width - 10)
+                            float availableWidth = i < columnNames.Length - 1 ? columnWidths[i] : columnWidths[i] - 10;
+
+                            if (columnNames[i] == "descripcion" || columnNames[i] == "nombreActividad")
                             {
-                                float ratio = (float)(cell.OwningColumn.Width - 10) / textWidth;
-                                ep.Graphics.DrawString(text, new Font("Segoe UI", 13 * ratio), Brushes.Black, left, top + 4);
+                                // Dividir el texto en líneas para permitir el salto de línea en las columnas "descripcion" y "nombreActividad"
+                                List<string> lines = SplitTextIntoLines(text, new Font("Segoe UI", 13), availableWidth, ep.Graphics);
+
+                                // Imprimir cada línea
+                                foreach (string line in lines)
+                                {
+                                    // Centrar el texto en la celda
+                                    StringFormat format = new StringFormat();
+                                    format.Alignment = StringAlignment.Center;
+                                    format.LineAlignment = StringAlignment.Center;
+
+                                    // Dibujar el texto centrado
+                                    ep.Graphics.DrawString(line, new Font("Segoe UI", 13), Brushes.Black, new RectangleF(left, top, columnWidths[i], DGV_ALTO), format);
+                                    top += DGV_ALTO;
+                                }
                             }
                             else
                             {
-                                ep.Graphics.DrawString(text, new Font("Segoe UI", 13), Brushes.Black, left, top + 4);
+                                // Centrar el texto en la celda
+                                StringFormat format = new StringFormat();
+                                format.Alignment = StringAlignment.Center;
+                                format.LineAlignment = StringAlignment.Center;
+
+                                // Dibujar el texto centrado
+                                ep.Graphics.DrawString(text, new Font("Segoe UI", 13), Brushes.Black, new RectangleF(left, top, columnWidths[i], DGV_ALTO), format);
+                                top += DGV_ALTO;
                             }
 
-                            left += cell.OwningColumn.Width;
+                            left += columnWidths[i];
                         }
                     }
 
+                    top -= DGV_ALTO;  // Ajustar la posición superior para la siguiente fila
                     top += DGV_ALTO;
                     ep.Graphics.DrawLine(Pens.Gray, ep.MarginBounds.Left, top, ep.MarginBounds.Right, top);
 
@@ -169,7 +209,40 @@ namespace AppMantenimiento
             doc.Print();
         }
 
+        private List<string> SplitTextIntoLines(string text, Font font, float maxWidth, Graphics graphics)
+        {
+            List<string> lines = new List<string>();
+            string[] words = text.Split(' ');
 
+            StringBuilder line = new StringBuilder();
+            foreach (string word in words)
+            {
+                float lineWidth = graphics.MeasureString(line.ToString() + word, font).Width;
+
+                if (lineWidth > maxWidth)
+                {
+                    lines.Add(line.ToString());
+                    line = new StringBuilder(word + " ");
+                }
+                else
+                {
+                    line.Append(word + " ");
+                }
+            }
+
+            lines.Add(line.ToString());
+            return lines;
+        }
+
+
+
+
+
+
+        private void EliminarRegistroDuplicado()
+        {
+            registro.EliminarRegistroDuplicado();
+        }
 
 
 
@@ -238,6 +311,8 @@ namespace AppMantenimiento
         private void bttImprimir_Click(object sender, EventArgs e)
         {
             PrintDataGridView();
+            bttImprimir.Enabled = false;
+            MessageBox.Show("Actualiza la pantalla para volver a imprimir.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void dtgActividades_CellContentClick(object sender, DataGridViewCellEventArgs e)

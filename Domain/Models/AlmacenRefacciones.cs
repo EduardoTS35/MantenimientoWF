@@ -46,6 +46,20 @@ namespace Domain.Models
         {
             userDao.EliminarMovimientoRefaccion(id);
         }
+        #region Dashboard
+        public DataTable MostrarHistorial(DateTime fechaInicio, DateTime fechaFin, int idStatus)
+        {
+            DataTable table = userDao.MostrarHistorial(fechaInicio, fechaFin,idStatus);
+            return table;
+        }
+        #endregion
+        #region Reporte Compras
+        public DataTable MostrarMovimientosFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            DataTable table = userDao.MostrarMovimientosFecha(fechaInicio, fechaFin);
+            return table;
+        }
+        #endregion
         #endregion
     }
 }

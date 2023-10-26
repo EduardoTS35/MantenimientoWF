@@ -98,3 +98,6 @@ C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMante
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmCreacionCompra.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmAutorizacionCompra.resources
 C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteCorrectivo.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmDashBoardAlmacen.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmGenerarReporteRefacciones.resources
+C:\Users\eduar\source\repos\AppMantenimiento\AppMantenimiento\obj\Debug\AppMantenimiento.FrmReporteCompras.resources
