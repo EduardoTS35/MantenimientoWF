@@ -320,8 +320,8 @@ namespace DataAccess
                 {
                     sqlCommand.Connection = sqlConnection;
                     sqlCommand.CommandText = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin";
-                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio.ToShortDateString());
+                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin.ToShortDateString());
                     sqlCommand.CommandType = CommandType.Text;
 
                     using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -352,7 +352,7 @@ namespace DataAccess
                 {
                     sqlCommand.Connection = sqlConnection;
 
-                    string query = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad INNER JOIN maquinaria m ON a.idMaquina=m.idMaquina WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin AND a.idArea IN ({0})";
+                    string query = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin AND a.idArea IN ({0})";
 
                     // Crear los parámetros para cada valor de idArea
                     List<string> parameterNames = new List<string>();
@@ -370,8 +370,8 @@ namespace DataAccess
                     string formattedQuery = string.Format(query, parameterString);
 
                     sqlCommand.CommandText = formattedQuery;
-                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio.ToShortDateString());
+                    sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin.ToShortDateString());
                     sqlCommand.CommandType = CommandType.Text;
                     try
                     {

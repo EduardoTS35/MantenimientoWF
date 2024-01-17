@@ -19,6 +19,7 @@ namespace AppMantenimiento
         {
             InitializeComponent();
             openChildForm(new FrmTablas());
+            Restricciones();
         }
         private void openChildForm(Form childForm)
         {
@@ -33,6 +34,19 @@ namespace AppMantenimiento
             pnlContenedor.Controls.Add(childForm);
             pnlContenedor.Tag = childForm;
             childForm.Show();
+        }
+
+        private void Restricciones()
+        {
+            if (Usuario.Puesto == "Gerente")
+            {
+                actividadesToolStripMenuItem.Visible = false;
+                mantenimientoCorrectivoToolStripMenuItem.Visible = false;
+                refaccionesToolStripMenuItem.Visible = false;
+                maquinariaToolStripMenuItem.Visible = false;
+                refaccionesToolStripMenuItem1.Visible = false;
+                comprasToolStripMenuItem.Visible = false;
+            }
         }
 
         private void asignaciónDeActividadesToolStripMenuItem_Click(object sender, EventArgs e)

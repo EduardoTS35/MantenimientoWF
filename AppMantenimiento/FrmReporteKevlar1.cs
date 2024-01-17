@@ -33,21 +33,22 @@ namespace AppMantenimiento
             };
         public FrmReporteKevlar1(DateTime fechaInicio, DateTime fechaFin, int[] idArea)
         {
+            
             InitializeComponent();
             if (idArea.Length > 1)
             {
-                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin));
-                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio, fechaFin), actividad.TiempoRegistrosProgramadosFecha(fechaInicio, fechaFin));
+                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio.Date, fechaFin.Date));
+                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(fechaInicio.Date, fechaFin.Date), actividad.TiempoRegistrosProgramadosFecha(fechaInicio, fechaFin));
             }
             else
             {
-                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea));
-                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoArea(fechaInicio, fechaFin, idArea), actividad.TiempoRegistrosProgramadosArea(fechaInicio, fechaFin,idArea));
+                MostrarPreventivoVsCorrectivo(correctivo.CorrectivoVsPreventivoArea(fechaInicio.Date, fechaFin.Date, idArea));
+                MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoArea(fechaInicio.Date, fechaFin.Date, idArea), actividad.TiempoRegistrosProgramadosArea(fechaInicio, fechaFin,idArea));
             }
-            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
-            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio, fechaFin, idArea));
-            MostrarPreventivoArea(actividad.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea));
-            MostrarMantoSistemaP(actividad.ObtenerPreventivoAreaFecha(fechaInicio, fechaFin, idArea));
+            MostrarCorrectivoArea(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio.Date, fechaFin.Date, idArea));
+            MostrarPorcentajePorDescripcionMaquina(correctivo.ObtenerCorrectivoAreaFecha(fechaInicio.Date, fechaFin.Date, idArea));
+            MostrarPreventivoArea(actividad.ObtenerPreventivoAreaFecha(fechaInicio.Date, fechaFin.Date, idArea));
+            MostrarMantoSistemaP(actividad.ObtenerPreventivoAreaFecha(fechaInicio.Date, fechaFin.Date, idArea));
         }
         private string GenerarLeyenda(double porcentajePreventivo, double porcentajeCorrectivo, double totalHoras)
         {

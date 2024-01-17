@@ -59,6 +59,7 @@ namespace AppMantenimiento
 
         private void MostrarPreventivoVsCorrectivo(float[] datos)
         {
+            
             chrCorrectivoVsPreventivo.ChartAreas[0].AxisX.Minimum = 0;
             chrCorrectivoVsPreventivo.ChartAreas[0].AxisY.Maximum = 0;
 
@@ -370,6 +371,11 @@ namespace AppMantenimiento
             MostrarPreventivoArea(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
             MostrarMantoSistemaP(registro.ObtenerPreventivoAreaFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0), areas));
             MostrarRealizadoVSProgramado(correctivo.CorrectivoVsPreventivoDashboard(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)),registro.TiempoRegistrosProgramadosFecha(Convert.ToDateTime(fechaDelDia).AddDays(-15.0), Convert.ToDateTime(fechaDelDia).AddDays(1.0)));
+        }
+
+        private void FrmTablas_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
