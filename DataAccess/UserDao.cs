@@ -319,10 +319,10 @@ namespace DataAccess
                 using (SqlCommand sqlCommand = new SqlCommand())
                 {
                     sqlCommand.Connection = sqlConnection;
-                    sqlCommand.CommandText = "SELECT SUM(a.tiempo) FROM registro_actividades re INNER JOIN actividades a ON re.idActividad=a.idActividad WHERE re.fechaProgramada BETWEEN @fechaInicio AND @fechaFin";
+                    sqlCommand.CommandText = "ObtenerSumaTiempoActividades";
                     sqlCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio.ToShortDateString());
                     sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin.ToShortDateString());
-                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
 
                     using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
                     {
