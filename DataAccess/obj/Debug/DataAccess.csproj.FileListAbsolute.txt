@@ -7,3 +7,12 @@ C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.pdb
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\bin\Debug\Common.dll
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\bin\Debug\Common.pdb
 C:\Users\eduar\source\repos\AppMantenimiento\DataAccess\obj\Debug\DataAccess.csproj.CopyComplete
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\bin\Debug\Common.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\bin\Debug\Common.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\obj\Debug\DataAccess.csproj.AssemblyReference.cache
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\obj\Debug\DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\obj\Debug\DataAccess.csproj.Up2Date
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\DataAccess\obj\Debug\DataAccess.pdb

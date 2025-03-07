@@ -18,15 +18,10 @@ namespace Domain.Models
         public DateTime Fecha { get; set; }
         #endregion
         #region Métodos
-        public async Task<DataTable> MostrarCorrectivoAsync()
-        {
-            DataTable table = await Task.FromResult(userDao.MostrarCorrectivos());
-            return table;
-        }
-        public DataTable MostrarCorrectivo()
+        public DataTable MostrarCorrectivo(DateTime fechaInicio, DateTime fechaFin)
         {
             _ = new DataTable();
-            DataTable table = userDao.MostrarCorrectivos();
+            DataTable table = userDao.MostrarCorrectivos(fechaInicio, fechaFin);
             return table;
         }
         public void AgregarCorrectivo(int idMaquina, int idTrabajador, double tiempoParo,

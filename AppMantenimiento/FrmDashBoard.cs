@@ -143,5 +143,10 @@ namespace AppMantenimiento
         {
             openChildForm(new FrmDashBoardAlmacen());
         }
+
+        private void historialDeActividadesRealizadasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openChildForm(new FrmDetalleActividadesProgramadas());
+        }
     }
 }

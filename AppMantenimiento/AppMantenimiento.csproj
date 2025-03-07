@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D04B923A70CE1285B4CB529BDFA566EC334FCFBB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2A45E4C37A6470F22F0D0A5A88CC7B258AB075DE</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>AppMantenimiento_TemporaryKey.pfx</ManifestKeyFile>
@@ -58,7 +58,13 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AppMantenimiento_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
@@ -169,6 +175,12 @@
     </Compile>
     <Compile Include="FrmDashBoardAlmacen.Designer.cs">
       <DependentUpon>FrmDashBoardAlmacen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmDetalleActividadesProgramadas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDetalleActividadesProgramadas.Designer.cs">
+      <DependentUpon>FrmDetalleActividadesProgramadas.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmGenerarReporteRefacciones.cs">
       <SubType>Form</SubType>
@@ -307,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDashBoardAlmacen.resx">
       <DependentUpon>FrmDashBoardAlmacen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDetalleActividadesProgramadas.resx">
+      <DependentUpon>FrmDetalleActividadesProgramadas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGenerarReporteRefacciones.resx">
       <DependentUpon>FrmGenerarReporteRefacciones.cs</DependentUpon>

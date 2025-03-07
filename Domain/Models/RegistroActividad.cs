@@ -26,6 +26,11 @@ namespace Domain.Models
             DataTable table = await Task.FromResult(userDao.MostrarRegistroActividades());
             return table;
         }
+        public async Task<DataTable> MostrarRegistroAsync(DateTime fechaInicio, DateTime fechaFin)
+        {
+            DataTable table = await Task.FromResult(userDao.MostrarRegistroActividades(fechaInicio, fechaFin));
+            return table;
+        }
         public DataTable MostrarRegistro()
         {
             _ = new DataTable();

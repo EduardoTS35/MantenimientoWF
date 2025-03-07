@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace AppMantenimiento
     public partial class FrmMantenimientoCorrectivo : Form
     {
         public RegistroCorrectivo correctivo = new RegistroCorrectivo();
+        DataTable dt = new DataTable();
         Area area = new Area();
         Maquina maquina = new Maquina();
         Trabajador trabajador = new Trabajador();
@@ -36,7 +38,7 @@ namespace AppMantenimiento
             dtgActividades.Columns.Clear();
 
             // Configurar las columnas deseadas y ocultar las no deseadas
-            ConfigurarColumnas();
+            ConfigurarColumnas(DateTime.Now.AddDays(-60),DateTime.Now);
 
             // Agregar las columnas de botones al control DataGridView si aún no se han agregado
             dtgActividades.Columns.Add(buttonSeleccionar);
@@ -44,9 +46,10 @@ namespace AppMantenimiento
             dtgActividades.Columns.Add(buttonMostrar);
         }
 
-        private void ConfigurarColumnas()
+        private void ConfigurarColumnas(DateTime fechaInicio, DateTime fechaFin)
         {
-            dtgActividades.DataSource = correctivo.MostrarCorrectivo();
+            dt = correctivo.MostrarCorrectivo(fechaInicio, fechaFin);
+            dtgActividades.DataSource = dt;
 
             dtgActividades.Columns[13].HeaderText = "Área";
             dtgActividades.Columns[13].Visible = true;
@@ -117,7 +120,7 @@ namespace AppMantenimiento
             try
             {
                 correctivo.AgregarCorrectivo((int)cmbMaquina.SelectedValue, (int)cmbTrabajadores.SelectedValue,
-                                (double)nmrTiempoParo.Value, txtDesc.Text, DateTime.Now);
+                                (double)nmrTiempoParo.Value, txtDesc.Text, dtpFechaActividad.Value);
                 MessageBox.Show("Actividad registrada correctamente.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 MostrarActividades();
 
@@ -176,6 +179,40 @@ namespace AppMantenimiento
             bttCerrarListado.Enabled = false;
             txtDescListado.Clear();
             nmrHorasTrabajadas.Value = 0;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (dtgActividades.DataSource is DataTable dt)
+            {
+                string filtro = textBox1.Text.Trim();
+
+                if (string.IsNullOrEmpty(filtro))
+                {
+                    dt.DefaultView.RowFilter = ""; // Mostrar todo si no hay filtro
+                }
+                else
+                {
+                    // Filtrar por Área, Máquina o Descripción (columnas visibles)
+                    dt.DefaultView.RowFilter = string.Format(
+                        "[descripcion1] LIKE '%{0}%' OR [descripcion2] LIKE '%{0}%' OR [descripcion] LIKE '%{0}%'", filtro);
+                }
+            }
+        }
+
+        private void bttFiltro_Click(object sender, EventArgs e)
+        {
+            dt.Clear();
+            dtgActividades.Columns.Clear();
+            ConfigurarColumnas(dtpFechaInicio.Value, dtpFechaFin.Value);
+        }
+
+        private void bttRestablecer_Click(object sender, EventArgs e)
+        {
+            dt.Clear();
+            dtgActividades.Columns.Clear();
+            textBox1.Clear();
+            ConfigurarColumnas(DateTime.Now.AddDays(-60), DateTime.Now);
         }
     }
 }

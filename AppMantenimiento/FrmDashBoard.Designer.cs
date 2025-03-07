@@ -45,6 +45,7 @@
             this.refaccionesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.comrpasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refaccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solicitarRefacciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.almacénToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.catálogoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,7 @@
             this.maquinariaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.catálogoDeMaquinariaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlContenedor = new System.Windows.Forms.Panel();
-            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.historialDeActividadesRealizadasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +90,8 @@
             this.actividadesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cátalogoActividadesToolStripMenuItem,
             this.asignaciónDeActividadesToolStripMenuItem,
-            this.revisiónDeActividadesToolStripMenuItem});
+            this.revisiónDeActividadesToolStripMenuItem,
+            this.historialDeActividadesRealizadasToolStripMenuItem});
             this.actividadesToolStripMenuItem.Name = "actividadesToolStripMenuItem";
             this.actividadesToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
             this.actividadesToolStripMenuItem.Text = "Mantenimiento Preventivo";
@@ -97,21 +99,21 @@
             // cátalogoActividadesToolStripMenuItem
             // 
             this.cátalogoActividadesToolStripMenuItem.Name = "cátalogoActividadesToolStripMenuItem";
-            this.cátalogoActividadesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.cátalogoActividadesToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.cátalogoActividadesToolStripMenuItem.Text = "Cátalogo Actividades";
             this.cátalogoActividadesToolStripMenuItem.Click += new System.EventHandler(this.cátalogoActividadesToolStripMenuItem_Click);
             // 
             // asignaciónDeActividadesToolStripMenuItem
             // 
             this.asignaciónDeActividadesToolStripMenuItem.Name = "asignaciónDeActividadesToolStripMenuItem";
-            this.asignaciónDeActividadesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.asignaciónDeActividadesToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.asignaciónDeActividadesToolStripMenuItem.Text = "Asignación de Actividades";
             this.asignaciónDeActividadesToolStripMenuItem.Click += new System.EventHandler(this.asignaciónDeActividadesToolStripMenuItem_Click);
             // 
             // revisiónDeActividadesToolStripMenuItem
             // 
             this.revisiónDeActividadesToolStripMenuItem.Name = "revisiónDeActividadesToolStripMenuItem";
-            this.revisiónDeActividadesToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.revisiónDeActividadesToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
             this.revisiónDeActividadesToolStripMenuItem.Text = "Revisión de Actividades";
             this.revisiónDeActividadesToolStripMenuItem.Click += new System.EventHandler(this.revisiónDeActividadesToolStripMenuItem_Click);
             // 
@@ -196,24 +198,31 @@
             this.refaccionesToolStripMenuItem.Size = new System.Drawing.Size(82, 24);
             this.refaccionesToolStripMenuItem.Text = "Refacciones";
             // 
+            // dashboardToolStripMenuItem
+            // 
+            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.dashboardToolStripMenuItem.Text = "Dashboard";
+            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
+            // 
             // solicitarRefacciónToolStripMenuItem
             // 
             this.solicitarRefacciónToolStripMenuItem.Name = "solicitarRefacciónToolStripMenuItem";
-            this.solicitarRefacciónToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.solicitarRefacciónToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.solicitarRefacciónToolStripMenuItem.Text = "Solicitar Refacción";
             this.solicitarRefacciónToolStripMenuItem.Click += new System.EventHandler(this.solicitarRefacciónToolStripMenuItem_Click);
             // 
             // almacénToolStripMenuItem
             // 
             this.almacénToolStripMenuItem.Name = "almacénToolStripMenuItem";
-            this.almacénToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.almacénToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.almacénToolStripMenuItem.Text = "Almacén";
             this.almacénToolStripMenuItem.Click += new System.EventHandler(this.almacénToolStripMenuItem_Click);
             // 
             // catálogoToolStripMenuItem
             // 
             this.catálogoToolStripMenuItem.Name = "catálogoToolStripMenuItem";
-            this.catálogoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.catálogoToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.catálogoToolStripMenuItem.Text = "Catálogo";
             this.catálogoToolStripMenuItem.Click += new System.EventHandler(this.catálogoToolStripMenuItem_Click);
             // 
@@ -222,7 +231,7 @@
             this.reportesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.comprasToolStripMenuItem1});
             this.reportesToolStripMenuItem1.Name = "reportesToolStripMenuItem1";
-            this.reportesToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.reportesToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.reportesToolStripMenuItem1.Text = "Reportes";
             // 
             // comprasToolStripMenuItem1
@@ -237,7 +246,7 @@
             this.comprasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.autorizarCompraToolStripMenuItem});
             this.comprasToolStripMenuItem.Name = "comprasToolStripMenuItem";
-            this.comprasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.comprasToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.comprasToolStripMenuItem.Text = "Compras";
             // 
             // autorizarCompraToolStripMenuItem
@@ -271,12 +280,12 @@
             this.pnlContenedor.Size = new System.Drawing.Size(815, 550);
             this.pnlContenedor.TabIndex = 1;
             // 
-            // dashboardToolStripMenuItem
+            // historialDeActividadesRealizadasToolStripMenuItem
             // 
-            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dashboardToolStripMenuItem.Text = "Dashboard";
-            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
+            this.historialDeActividadesRealizadasToolStripMenuItem.Name = "historialDeActividadesRealizadasToolStripMenuItem";
+            this.historialDeActividadesRealizadasToolStripMenuItem.Size = new System.Drawing.Size(255, 22);
+            this.historialDeActividadesRealizadasToolStripMenuItem.Text = "Historial de Actividades Realizadas";
+            this.historialDeActividadesRealizadasToolStripMenuItem.Click += new System.EventHandler(this.historialDeActividadesRealizadasToolStripMenuItem_Click);
             // 
             // FrmDashBoard
             // 
@@ -327,6 +336,7 @@
         private System.Windows.Forms.ToolStripMenuItem reporteCorrectivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem comprasToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem historialDeActividadesRealizadasToolStripMenuItem;
     }
 }
 

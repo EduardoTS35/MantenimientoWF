@@ -119,6 +119,31 @@ namespace DataAccess
                 }
             }
         }
+        public DataTable MostrarRegistroActividades(DateTime fechaInicio, DateTime fechaFin)
+        {
+            SqlDataReader leer;
+            DataTable table = new DataTable();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "SELECT *FROM registro_actividades re " +
+                        "INNER JOIN actividades a ON re.idActividad = a.idActividad " +
+                        "INNER JOIN maquinaria m ON re.idMaquina = m.idMaquina " +
+                        "INNER JOIN area ar ON m.idArea = ar.idArea " +
+                        "INNER JOIN trabajadores t ON re.idTrabajador = t.idTrabajador " +
+                        "WHERE fechaRealizacion BETWEEN @fechaInicio AND @fechaFin";
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                    leer = command.ExecuteReader();
+                    table.Load(leer);
+                    connection.Close();
+                    return table;
+                }
+            }
+        }
         public void AgregarRegistroActividad(string idOrden, int idActividad, int idMaquina, int idTrabajador, DateTime fechaProgramada,
             DateTime fechaRealizacion, string notas, int idTrabajadorSupervisor)
         {
@@ -399,7 +424,7 @@ namespace DataAccess
         #endregion
         #endregion
         #region Mantenimeinto Correctivo
-        public DataTable MostrarCorrectivos()
+        public DataTable MostrarCorrectivos(DateTime fechaInicio, DateTime fechaFin)
         {
             SqlDataReader leer;
             DataTable table = new DataTable();
@@ -409,13 +434,17 @@ namespace DataAccess
                 using (var command = new SqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT *FROM registro_mantenimiento_correctivo rc " +
-                        "INNER JOIN maquinaria m " +
-                        "ON rc.idMaquina=m.idMaquina " +
-                        "INNER JOIN area a " +
-                        "ON m.idArea=a.idArea " +
-                        "INNER JOIN trabajadores t " +
-                        "ON rc.idTrabajador=t.idTrabajador ORDER BY rc.id DESC";
+                    command.CommandText = "SELECT * " +
+                      "FROM registro_mantenimiento_correctivo rc " +
+                      "INNER JOIN maquinaria m ON rc.idMaquina = m.idMaquina " +
+                      "INNER JOIN area a ON m.idArea = a.idArea " +
+                      "INNER JOIN trabajadores t ON rc.idTrabajador = t.idTrabajador " +
+                      "WHERE rc.fecha BETWEEN @fechaInicio AND @fechaFin " +
+                      "ORDER BY rc.id DESC; ";
+
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+
                     leer = command.ExecuteReader();
                     table.Load(leer);
                     connection.Close();

@@ -9,3 +9,14 @@ C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.dll
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\obj\Debug\Domain.pdb
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\bin\Debug\Common.dll
 C:\Users\eduar\source\repos\AppMantenimiento\Domain\bin\Debug\Common.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\Domain.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\Domain.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\Common.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\DataAccess.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\Common.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\bin\Debug\DataAccess.pdb
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\obj\Debug\Domain.csproj.AssemblyReference.cache
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\obj\Debug\Domain.csproj.CoreCompileInputs.cache
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\obj\Debug\Domain.csproj.Up2Date
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\obj\Debug\Domain.dll
+C:\Users\eduar\Source\Repos\MantenimientoWF\Domain\obj\Debug\Domain.pdb
